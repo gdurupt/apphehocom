@@ -124,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "HehocomFront"
+    }
+  },
+  "defaultProject": "HehocomFront",
+  "cli": {
+    "analytics": "c86ee357-93dd-4732-9823-2768b49515a9"
+  }
 }
