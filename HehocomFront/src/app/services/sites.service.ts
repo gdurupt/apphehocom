@@ -56,6 +56,21 @@ addSite(data){
 
 /**
 *  
+*  Ajout d'un commentaire avec un fichier
+*/
+AddComentAndFileBySite(file,id){
+  
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')};
+
+  let formDate = new FormData();
+
+  formDate.append('file', file);
+
+  return this.HttpClient.put<any>(environment.apiUrl + '/site/update/' + id + "/file", formDate,{'headers':headers} );
+}
+
+/**
+*  
 *  Modification Site
 */
 updateSite(id,data){
@@ -75,7 +90,7 @@ updateHebergementSite(idSite,idHebergement){
 
 /**
 *  
-*  Suppression d'un utilisateur
+*  Suppression d'un site
 */
 deleteSite(id){
   const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
