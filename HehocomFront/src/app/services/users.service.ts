@@ -21,10 +21,10 @@ export class UsersService {
 
 /**
 * 
-* Recuperation de l'utilisateur lier a son token
+* Recuperation de l'utilisateur lier a son tokenhehocom
 */
-  getOneUser() : Observable<User> {
-    const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  getTokenUser() : Observable<User> {
+    const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
     return this.HttpClient.get<User>(environment.apiUrl + '/member',{'headers':headers});
   }
 
@@ -33,7 +33,7 @@ export class UsersService {
 * Recuperation de tout les utilisateur
 */
   getAllUsers() : Observable<User[]> {
-    const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+    const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
     return this.HttpClient.get<User[]>(environment.apiUrl + '/profile',{'headers':headers});
   }
 
@@ -42,7 +42,7 @@ export class UsersService {
 * Recuperation d'un utilisateur par Id
 */
 getOneUserById(id) : Observable<User[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<User[]>(environment.apiUrl + '/profile/' + id,{'headers':headers});
 }
 
@@ -51,7 +51,7 @@ getOneUserById(id) : Observable<User[]> {
 * Recuperation d'un utilisateur par mail
 */
 getOneUserByMail(mail) : Observable<User> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<User>(environment.apiUrl + '/profile/search/' + mail,{'headers':headers});
 }
 
@@ -61,7 +61,7 @@ getOneUserByMail(mail) : Observable<User> {
 */
 register(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json'}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/register', body,{'headers':headers});
 }
 
@@ -81,7 +81,7 @@ login(data){
 */
 changeStatus(id,data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/admin/members/' + id + '/status', body,{'headers':headers});
 }
 
@@ -92,7 +92,7 @@ changeStatus(id,data){
 */
 UpdateProfile(id,data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/profile/' + id, body,{'headers':headers});
 }
 
@@ -102,7 +102,7 @@ UpdateProfile(id,data){
 */
 changePassword(id,data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/profile/password/' + id, body,{'headers':headers});
 }
 
@@ -111,7 +111,7 @@ changePassword(id,data){
 *  Suppression d'un utilisateur
 */
 deleteUser(id){
-  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/profile/' + id,{'headers':headers});
 }
 

@@ -1,1 +1,75 @@
-<p>dashboard works!</p>
+<section class="bg-dark">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div *ngIf="user != null" class="navbar-header">
+            <a class="navbar-brand text-light font-weight-bold" href="">Mr/Mme {{ user.username }}  {{ user.secondname }}</a>
+          </div>
+        </div>
+      </nav>
+</section>
+
+<section class="d-flex">
+
+    <app-header class="bg-dark col-lg-2"></app-header>
+    <section *ngIf="sites != null">
+        <div>
+            <form class="input-group m-5 col-5 p-0"  [formGroup]="searchform" (ngSubmit)="searchSiteName()">
+                <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Recherche de site</span></div>
+                <input type="text" class="form-control" id="nom" aria-describedby="nom-base" placeholder="Nom du site" formControlName="name">
+            <button class="col-3 ml-3 btn btn-primary" type="submit" [disabled]="searchform.invalid">Rechercher</button>
+            </form>
+            <div *ngIf="errorForm != false" class="m-5 col-5 p-0">
+                <p class="text-danger">Le site n"existe pas ou il y a une erreur sur l'écriture.</p>
+            </div>
+            <div *ngIf="OneSite != null" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+                <div class="col-3 p-0">
+                    <img *ngIf="OneSite.presentation == null" class="card-img-top" src="..." alt="Card image cap">
+                    <img *ngIf="OneSite.presentation != null"  class="img-fluid" src="../../assets/image_presentation/{{ OneSite.presentation }}" alt="Card image cap">
+                </div>
+                <div class="col-9 d-flex flex-column my-4">
+                  <h3 class="text-center h1">{{ OneSite.name }}</h3>
+                <div class="d-flex align-items-start justify-content-around">
+                    <p>Statut : {{ OneSite.statut }}</p>
+                    <p>Type : {{ OneSite.type }}</p>
+                </div>
+                <p>Date de création : {{ OneSite.dateCreation }}</p>
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <p>Nombre de missions réalisé : </p>
+                        <p>Nombre de commentaire : </p>
+                        <p>Derniere mission ajouté : </p>
+                        <p>Date dernier commentaire ajouté : </p>
+                    </div>
+                </div>
+                  <a href="{{ OneSite.url }}">Lien du site</a>
+                </div>
+                <button class="btn btn-success" type="button">></button>
+              </div>
+        </div>
+        <div *ngFor="let site of sites; let id = index" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+            <div class="col-3 p-0">
+                <img *ngIf="site.presentation == null" class="card-img-top" src="..." alt="Card image cap">
+                <img *ngIf="site.presentation != null"  class="img-fluid" src="../../assets/image_presentation/{{ site.presentation }}" alt="Card image cap">
+            </div>
+            <div class="col-9 d-flex flex-column my-4">
+              <h3 class="text-center h1">{{ site.name }}</h3>
+            <div class="d-flex align-items-start justify-content-around">
+                <p>Statut : {{ site.statut }}</p>
+                <p>Type : {{ site.type }}</p>
+            </div>
+            <p>Date de création : {{ site.dateCreation }}</p>
+            <div class="d-flex align-items-start justify-content-between">
+                <div>
+                    <p>Nombre de missions réalisé : </p>
+                    <p>Nombre de commentaire : </p>
+                    <p>Derniere mission ajouté : </p>
+                    <p>Date dernier commentaire ajouté : </p>
+                </div>
+            </div>
+              <a href="{{ site.url }}">Lien du site</a>
+            </div>
+            <button class="btn btn-success" type="button">></button>
+          </div>
+    </section>
+</section>
+<app-footer class="bg-dark h-100 w-100"></app-footer>

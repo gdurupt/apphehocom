@@ -20,7 +20,7 @@ export class ServiceBySiteService {
 * Recuperation des services lié a un site
 */
 getServiceBySite(idSite) : Observable<Service[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Service[]>(environment.apiUrl + '/serviceBySite/' + idSite,{'headers':headers});
 }
 
@@ -31,7 +31,7 @@ getServiceBySite(idSite) : Observable<Service[]> {
 */
 AddServiceBySite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/serviceBySite', body,{'headers':headers});
 }
 }

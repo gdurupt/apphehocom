@@ -20,7 +20,7 @@ export class ServicesService {
 * Recuperation des services
 */
 getAllService(id) : Observable<Service[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Service[]>(environment.apiUrl + '/service/' + id,{'headers':headers});
 }
 
@@ -31,7 +31,7 @@ getAllService(id) : Observable<Service[]> {
 */
 AddService(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/service', body,{'headers':headers});
 }
 
@@ -41,7 +41,7 @@ AddService(data){
 */
 UpdateService(data,id){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/service/' + id, body,{'headers':headers});
 }
 
@@ -50,7 +50,7 @@ UpdateService(data,id){
 * Suppression d'un service
 */
 deleteService(id) {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/service/' + id,{'headers':headers});
 }
 }

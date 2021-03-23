@@ -20,7 +20,7 @@ export class ComentsService {
 * Recuperation des commentaires lié a un site
 */
 getComentBySite(id) : Observable<Coment[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Coment[]>(environment.apiUrl + '/coment/' + id,{'headers':headers});
 }
 
@@ -31,7 +31,7 @@ getComentBySite(id) : Observable<Coment[]> {
 */
 AddComentBySite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/coment/text', body,{'headers':headers});
 }
 
@@ -41,7 +41,7 @@ AddComentBySite(data){
 */
 AddComentAndFileBySite(data,file){
   
-  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')};
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')};
 
   let formDate = new FormData();
 
@@ -64,7 +64,7 @@ AddComentAndFileBySite(data,file){
 */
 UpdateComentBySite(data,id){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/coment' + id, body,{'headers':headers});
 }
 
@@ -73,7 +73,7 @@ UpdateComentBySite(data,id){
 * Suppression d'un commentaire
 */
 deleteComentBySite(id) {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/coment/' + id,{'headers':headers});
 }
 

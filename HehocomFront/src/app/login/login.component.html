@@ -1,1 +1,37 @@
-<p>login works!</p>
+
+<section>
+  <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <div class="login100-form-title" style="background-image: url(../../assets/ImageSite/logoLogin.jpg);">
+            <span class="login100-form-title-1">
+              
+            </span>
+          </div>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()" class="login100-form validate-form">
+            <div class="wrap-input100 m-b-26 mb-3">
+              <span class="label-input100">Email</span>
+              <input class="input100" type="text" formControlName="email" placeholder="E-mail">
+            </div>
+            <div class="wrap-input100 m-b-18 mb-4">
+              <span class="label-input100">Password</span>
+              <input class="input100" type="password" formControlName="password" placeholder="Mot de passe">
+            </div>
+            <span *ngIf="errorLogin" class="small text-danger">Email ou mot de passe inccorecte</span>
+            <div class="flex-sb-m w-full p-b-30 mb-3">
+              <div>
+                <a href="#" class="txt1">
+                 Mot de passe oublier ?
+                </a>
+              </div>
+            </div>
+            <div class="container-login100-form-btn">
+              <button type="submit" [disabled]="loginForm.invalid" class="login100-form-btn mb-3">
+                Se connecter
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -22,7 +22,7 @@ export class SitesService {
 * Recuperation de totu les sites
 */
 getAllSite() : Observable<Site[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Site[]>(environment.apiUrl + '/sites',{'headers':headers});
 }
 
@@ -31,8 +31,8 @@ getAllSite() : Observable<Site[]> {
 * Recuperation d'un site par son nom
 */
 getOneSiteByName(name) : Observable<Site> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
-  return this.HttpClient.get<Site>(environment.apiUrl + '/site/' + name,{'headers':headers});
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<Site>(environment.apiUrl + '/sites/' + name,{'headers':headers});
 }
 
 /**
@@ -40,7 +40,7 @@ getOneSiteByName(name) : Observable<Site> {
 * Recuperation d'un site par son id'
 */
 getOneSiteById(id) : Observable<Site> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Site>(environment.apiUrl + '/site/' + id,{'headers':headers});
 }
 
@@ -50,7 +50,7 @@ getOneSiteById(id) : Observable<Site> {
 */
 addSite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/site', body,{'headers':headers});
 }
 
@@ -60,7 +60,7 @@ addSite(data){
 */
 AddComentAndFileBySite(file,id){
   
-  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')};
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')};
 
   let formDate = new FormData();
 
@@ -75,7 +75,7 @@ AddComentAndFileBySite(file,id){
 */
 updateSite(id,data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/site/update/' + id, body,{'headers':headers});
 }
 
@@ -84,7 +84,7 @@ updateSite(id,data){
 *  Modification hebergement Site
 */
 updateHebergementSite(idSite,idHebergement){
-  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/site/update/' + idSite + '/' + idHebergement,{'headers':headers});
 }
 
@@ -93,7 +93,7 @@ updateHebergementSite(idSite,idHebergement){
 *  Suppression d'un site
 */
 deleteSite(id){
-  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/site/' + id,{'headers':headers});
 }
 

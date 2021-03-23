@@ -22,7 +22,7 @@ export class MissionsService {
 * Recuperation des commentaires lié a un site
 */
 getMissionBySite(id) : Observable<Mission[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Mission[]>(environment.apiUrl + '/mission/' + id,{'headers':headers});
 }
 
@@ -33,7 +33,7 @@ getMissionBySite(id) : Observable<Mission[]> {
 */
 AddMissionBySite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/mission', body,{'headers':headers});
 }
 
@@ -43,7 +43,7 @@ AddMissionBySite(data){
 */
 UpdateMissionBySite(data,id){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/mission' + id, body,{'headers':headers});
 }
 
@@ -52,7 +52,7 @@ UpdateMissionBySite(data,id){
 * Suppression d'une mission
 */
 deleteMissionBySite(id) {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/mission/' + id,{'headers':headers});
 }
 }

@@ -24,7 +24,7 @@ export class UserbysiteService {
 * Recuperation des sites lié a un utilisateur
 */
 getOneUser() : Observable<Site[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Site[]>(environment.apiUrl + '/userbysite/byUser',{'headers':headers});
 }
 
@@ -35,7 +35,7 @@ getOneUser() : Observable<Site[]> {
 */
 addUserBySite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/userbysite', body,{'headers':headers});
 }
 

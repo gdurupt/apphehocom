@@ -20,7 +20,7 @@ export class HebergementsService {
 * Recuperation des hebergements
 */
 getHebergementBySite(id) : Observable<Hebergement[]> {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Hebergement[]>(environment.apiUrl + '/hebergement/' + id,{'headers':headers});
 }
 
@@ -31,7 +31,7 @@ getHebergementBySite(id) : Observable<Hebergement[]> {
 */
 AddHebergementBySite(data){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/hebergement', body,{'headers':headers});
 }
 
@@ -41,7 +41,7 @@ AddHebergementBySite(data){
 */
 UpdateHebergementBySite(data,id){
   const body=JSON.stringify(data);
-  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.put<any>(environment.apiUrl + '/hebergement/' + id, body,{'headers':headers});
 }
 
@@ -50,7 +50,7 @@ UpdateHebergementBySite(data,id){
 * Suppression d'un hebergement
 */
 deleteHebergementBySite(id) {
-  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.delete<any>(environment.apiUrl + '/hebergement/' + id,{'headers':headers});
 }
 }

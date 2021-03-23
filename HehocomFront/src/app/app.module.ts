@@ -9,6 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ServiceComponent } from './service/service.component';
+import { HebergementComponent } from './hebergement/hebergement.component';
+import { GestionUserComponent } from './gestion-user/gestion-user.component';
+import { ContactComponent } from './contact/contact.component';
+import { SiteComponent } from './site/site.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +21,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     LoginComponent,
     HeaderComponent,
     FooterComponent,
-    DashboardComponent
+    DashboardComponent,
+    ServiceComponent,
+    HebergementComponent,
+    GestionUserComponent,
+    ContactComponent,
+    SiteComponent
   ],
   imports: [
     BrowserModule,
