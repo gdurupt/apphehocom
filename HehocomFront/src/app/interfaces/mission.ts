@@ -4,5 +4,6 @@ export interface Mission {
     id:	number,
     idSite:	number,
     statut:string,
-    type:string
+    type:string,
+    name:string
 }

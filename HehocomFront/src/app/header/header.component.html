@@ -1,4 +1,4 @@
-<section *ngIf="user != null" class="d-flex flex-column align-items-center justify-content-center py-5">
+<section *ngIf="user != null" class="d-flex flex-column align-items-center justify-content-center py-5 position-fixed col-2">
     <button type="button" class="btn btn-success my-3 col-10 font-weight-bold" [routerLink]="['/dashboard']">Dashboard</button>
     <button *ngIf="user.status == 'ADMINISTRATOR' || user.status == 'DESIGNERTEAM' || user.status == 'DEVTEAM'" type="button" class="btn btn-success my-3 col-10 font-weight-bold" [routerLink]="['/hebergement']">Hebergement</button>
     <button type="button" class="btn btn-success my-3 col-10 font-weight-bold" [routerLink]="['/service']">Services</button>

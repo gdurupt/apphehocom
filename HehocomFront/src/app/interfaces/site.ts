@@ -1,3 +1,5 @@
+
+
 export interface Site {
     id:number,
     idHebergement:number,
@@ -8,4 +10,8 @@ export interface Site {
     url:string,
     presentation: string,
     name: string
+    lastMission:string,
+    NumberMission:number,
+    lastComment:string,
+    NumberComent:number
 }

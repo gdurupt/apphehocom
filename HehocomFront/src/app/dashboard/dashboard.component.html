@@ -1,4 +1,4 @@
-<section class="bg-dark">
+<section class="bg-dark position-fixed w-100" style="top: 0;z-index: 100;">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div *ngIf="user != null" class="navbar-header">
@@ -8,22 +8,43 @@
       </nav>
 </section>
 
-<section class="d-flex">
+<section class="d-flex mt-5" *ngIf="user != null">
 
     <app-header class="bg-dark col-lg-2"></app-header>
     <section *ngIf="sites != null">
         <div>
-            <form class="input-group m-5 col-5 p-0"  [formGroup]="searchform" (ngSubmit)="searchSiteName()">
-                <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Recherche de site</span></div>
-                <input type="text" class="form-control" id="nom" aria-describedby="nom-base" placeholder="Nom du site" formControlName="name">
-            <button class="col-3 ml-3 btn btn-primary" type="submit" [disabled]="searchform.invalid">Rechercher</button>
-            </form>
+            <div class="m-5 col-11 p-0 d-flex align-items-center justify-content-between">
+                <form class="input-group col-8"  [formGroup]="searchform" (ngSubmit)="searchSiteName()">
+                    <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Recherche de site</span></div>
+                    <input type="text" class="form-control" id="nom" aria-describedby="nom-base" placeholder="Nom du site" formControlName="name">
+                <button class="ml-3 btn btn-primary" type="submit" [disabled]="searchform.invalid">Rechercher</button>
+                </form>
+                <button *ngIf="user.status != 'CLIENT'" class="ml-3 col-2 btn btn-success" type="button" data-toggle="modal" data-target="#ajoutsite" (click)="clearForm()">Ajouter un site</button>
+            </div>
             <div *ngIf="errorForm != false" class="m-5 col-5 p-0">
-                <p class="text-danger">Le site n"existe pas ou il y a une erreur sur l'écriture.</p>
+                <p class="text-danger">Le site n'existe pas ou il y a une erreur sur l'écriture.</p>
             </div>
             <div *ngIf="OneSite != null" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+                <div class="position-absolute three-point d-flex flex-column align-items-end justify-content-end" *ngIf="user.status != 'CLIENT'">
+                    <div class="blockIcon blockUpload d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#update" (click)="update(OneSite)">
+                        <small class="mr-2 uploadHover">Modifier site</small>
+                        <fa-icon [icon]="faWrench" class="uploadIcon"></fa-icon>
+                    </div>
+                    <div class="blockIcon blockUpload d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#fichier" (click)="update(OneSite)">
+                        <small class="mr-2 uploadHover">Modifier l'image</small>
+                        <fa-icon [icon]="faFileUpload" class="uploadIcon"></fa-icon>
+                    </div>
+                    <div class="blockIcon blockDelete d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#supprimer" (click)="idDelete(OneSite)">
+                        <small class="mr-2 deleteHover">Supprimer site</small>
+                        <fa-icon [icon]="faTrash" class="deleteIcon"></fa-icon>
+                    </div>
+                </div>
                 <div class="col-3 p-0">
-                    <img *ngIf="OneSite.presentation == null" class="card-img-top" src="..." alt="Card image cap">
+                    <div *ngIf="OneSite.presentation == null" class="h-100 d-flex align-items-center justify-content-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
                     <img *ngIf="OneSite.presentation != null"  class="img-fluid" src="../../assets/image_presentation/{{ OneSite.presentation }}" alt="Card image cap">
                 </div>
                 <div class="col-9 d-flex flex-column my-4">
@@ -35,20 +56,43 @@
                 <p>Date de création : {{ OneSite.dateCreation }}</p>
                 <div class="d-flex align-items-start justify-content-between">
                     <div>
-                        <p>Nombre de missions réalisé : </p>
-                        <p>Nombre de commentaire : </p>
-                        <p>Derniere mission ajouté : </p>
-                        <p>Date dernier commentaire ajouté : </p>
+                        <p>Nombre de missions réalisé : {{ OneSite.NumberMission }}</p>
+                        <p>Nombre de commentaire : {{ OneSite.NumberComent}}</p>
+                        <p>Derniere mission ajouté : {{ OneSite.lastMission }}</p>
+                        <p>Date dernier commentaire ajouté : {{ OneSite.lastComment }}</p>
                     </div>
                 </div>
-                  <a href="{{ OneSite.url }}">Lien du site</a>
+                <div class="d-flex ">
+                    <a class="mr-4" href="{{ OneSite.url }}">Site web</a><a href="{{ OneSite.url }}/wp-admin">BackOffice</a>
                 </div>
-                <button class="btn btn-success" type="button">></button>
+                    <div class="col-12 d-flex align-items-start justify-content-center">
+                        <button class="btn btn-success mt-4 col-8" type="button" [routerLink]="['/site/' + OneSite.name]">Accéder au détails du site</button>
+                    </div>
+                </div>
+                
               </div>
         </div>
-        <div *ngFor="let site of sites; let id = index" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+        <div *ngFor="let site of sites; let id = index;" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+            <div class="position-absolute three-point d-flex flex-column align-items-end justify-content-end" *ngIf="user.status != 'CLIENT'">
+                <div class="blockIcon blockUpload d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#update" (click)="update(site)">
+                    <small class="mr-2 uploadHover">Modifier site</small>
+                    <fa-icon [icon]="faWrench" class="uploadIcon"></fa-icon>
+                </div>
+                <div class="blockIcon blockUpload d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#fichier" (click)="update(site)">
+                    <small class="mr-2 uploadHover">Modifier l'image</small>
+                    <fa-icon [icon]="faFileUpload" class="uploadIcon"></fa-icon>
+                </div>
+                <div class="blockIcon blockDelete d-flex align-items-center justify-content-center" data-toggle="modal" data-target="#supprimer" (click)="idDelete(site)">
+                    <small class="mr-2 deleteHover">Supprimer site</small>
+                    <fa-icon [icon]="faTrash" class="deleteIcon"></fa-icon>
+                </div>
+            </div>
             <div class="col-3 p-0">
-                <img *ngIf="site.presentation == null" class="card-img-top" src="..." alt="Card image cap">
+                <div *ngIf="site.presentation == null" class="h-100 d-flex align-items-center justify-content-center">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
                 <img *ngIf="site.presentation != null"  class="img-fluid" src="../../assets/image_presentation/{{ site.presentation }}" alt="Card image cap">
             </div>
             <div class="col-9 d-flex flex-column my-4">
@@ -60,16 +104,159 @@
             <p>Date de création : {{ site.dateCreation }}</p>
             <div class="d-flex align-items-start justify-content-between">
                 <div>
-                    <p>Nombre de missions réalisé : </p>
-                    <p>Nombre de commentaire : </p>
-                    <p>Derniere mission ajouté : </p>
-                    <p>Date dernier commentaire ajouté : </p>
+                    <p>Nombre de missions réalisé : {{ site.NumberMission }}</p>
+                    <p>Nombre de commentaire : {{ site.NumberComent}}</p>
+                    <p>Derniere mission ajouté : {{ site.lastMission }}</p>
+                    <p>Date dernier commentaire ajouté : {{ site.lastComment }}</p>
                 </div>
             </div>
-              <a href="{{ site.url }}">Lien du site</a>
+            <div class="d-flex ">
+                <a class="mr-4" href="{{ site.url }}">Site web</a><a href="{{ site.url }}/wp-admin">BackOffice</a>
             </div>
-            <button class="btn btn-success" type="button">></button>
+                <div class="col-12 d-flex align-items-start justify-content-center">
+                    <button class="btn btn-success mt-4 col-8" type="button" [routerLink]="['/site/' + site.name]">Accéder au détails du site</button>
+                </div>
+            </div>
           </div>
     </section>
 </section>
 <app-footer class="bg-dark h-100 w-100"></app-footer>
+
+
+
+
+
+
+<!-- Modal Ajouter-->
+<div class="modal fade" id="ajoutsite" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ajouter un site</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <form class="modal-body" [formGroup]="siteForm" (ngSubmit)="addSite()">
+                <label for="name">Nom du site</label>
+                <input type="text" class="form-control mt-1" id="name" placeholder="Nom du site" formControlName="name">
+                <div class="form-group mt-2">
+                    <label for="exampleFormControlSelect1">Statut</label>
+                    <select class="form-control" id="exampleFormControlSelect1" formControlName="statut">
+                      <option value="LIGNE">En ligne</option>
+                      <option value="MAINTENANCE">En maintenance</option>
+                      <option value="CREATION">En création</option>
+                      <option value="PANNE">En panne</option>
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="exampleFormControlSelect2">Type</label>
+                    <select class="form-control" id="exampleFormControlSelect2" formControlName="type">
+                        <option value="ECOMMERCE">E-commerce</option>
+                        <option value="VITRINE">Site Vitrine</option>
+                        <option value="APPLICATION">Application</option>
+                        <option value="MOBILE">Appli mobile</option>
+                    </select>
+                </div>
+                <label for="url mt-2">Url du site</label>
+                <input type="text" class="form-control mt-1" id="url" placeholder="Url du site" formControlName="url">
+            <div class="mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="submit" class="btn btn-success ml-3" [disabled]="siteForm.invalid">Ajouter</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- Modal Fichier-->
+<div class="modal fade" id="fichier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modifier l'image</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+            <form class="modal-body" enctype="multipart/form-data">
+                <div class="w-100 custom-file mb-3">
+                    <input type="file" class="w-100 custom-file-input" id="customFileLangHTML" (change)="changefile($event)" multiple >
+                    <label class="w-100 custom-file-label" for="customFileLangHTML" data-browse="Choisir">{{ NameFile }}</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-warning" [disabled]="checkFile" (click)="updateFile()">Modifier l'image</button>
+                  </div>
+            </form>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Modal Supprimer -->
+<div class="modal fade" id="supprimer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Supprimer le site</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Etes vous sure de supprimer : {{ nameOfSite }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="button" class="btn btn-danger" (click)="deleteSite()">Supprimer</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal update -->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Supprimer le site</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="modal-body" [formGroup]="siteForm" (ngSubmit)="updateSite()">
+            <label for="name">Nom du site</label>
+            <input type="text" class="form-control mt-1" id="name" placeholder="Nom du site" formControlName="name">
+            <div class="form-group mt-2">
+                <label for="exampleFormControlSelect1">Statut</label>
+                <select class="form-control" id="exampleFormControlSelect1" formControlName="statut">
+                  <option value="LIGNE">En ligne</option>
+                  <option value="MAINTENANCE">En maintenance</option>
+                  <option value="CREATION">En création</option>
+                  <option value="PANNE">En panne</option>
+                </select>
+            </div>
+            <div class="form-group mt-2">
+                <label for="exampleFormControlSelect2">Type</label>
+                <select class="form-control" id="exampleFormControlSelect2" formControlName="type">
+                    <option value="ECOMMERCE">E-commerce</option>
+                    <option value="VITRINE">Site Vitrine</option>
+                    <option value="APPLICATION">Application</option>
+                    <option value="MOBILE">Appli mobile</option>
+                </select>
+            </div>
+            <label for="url mt-2">Url du site</label>
+            <input type="text" class="form-control mt-1" id="url" placeholder="Url du site" formControlName="url">
+            <label for="url mt-2">Base de donnée</label>
+            <input type="text" class="form-control mt-1" id="url" placeholder="Url du site" formControlName="bdd_name">
+        <div class="mt-3">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-success ml-3" [disabled]="siteForm.invalid">Modifier</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>

@@ -24,6 +24,24 @@ getComentBySite(id) : Observable<Coment[]> {
   return this.HttpClient.get<Coment[]>(environment.apiUrl + '/coment/' + id,{'headers':headers});
 }
 
+  /**
+* 
+* Recuperation des commentaires lié a un site
+*/
+getCountComentBySite(id) {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<number>(environment.apiUrl + '/coment/count/' + id,{'headers':headers});
+}
+
+/**
+* 
+* Recuperation des commentaires lié a un site
+*/
+getLastComentBySite(id) {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<Coment>(environment.apiUrl + '/coment/last/' + id,{'headers':headers});
+}
+
 
 /**
 *  

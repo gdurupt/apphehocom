@@ -14,6 +14,7 @@ import { HebergementComponent } from './hebergement/hebergement.component';
 import { GestionUserComponent } from './gestion-user/gestion-user.component';
 import { ContactComponent } from './contact/contact.component';
 import { SiteComponent } from './site/site.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SiteComponent } from './site/site.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

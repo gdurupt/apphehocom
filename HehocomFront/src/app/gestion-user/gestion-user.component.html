@@ -1,1 +1,162 @@
-<p>gestion-user works!</p>
+<section class="bg-dark position-fixed w-100" style="top: 0;z-index: 100;">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div *ngIf="userCo != null" class="navbar-header">
+        <a class="navbar-brand text-light font-weight-bold" href="">Mr/Mme {{ userCo.username }} {{ userCo.secondname }}</a>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<section class="d-flex mt-5">
+
+  <app-header class="bg-dark col-lg-2"></app-header>
+  <section *ngIf="users != null" class="w-100">
+    <div class="w-100">
+      <div class="m-5 col-11 p-0 d-flex align-items-center justify-content-between">
+        <form class="input-group col-8" [formGroup]="searchform" (ngSubmit)="searchUserName()">
+          <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Email utilisateur</span></div>
+          <input type="text" class="form-control" id="nom" aria-describedby="nom-base" placeholder="Email utilisateur"
+            formControlName="email">
+          <button class="ml-3 btn btn-primary" type="submit" [disabled]="searchform.invalid">Rechercher</button>
+        </form>
+        <button class="ml-3 col-2 btn btn-success" type="button" data-toggle="modal"
+          data-target="#ajoutuser" (click)="clearForm()">Ajouter un utilisateur</button>
+      </div>
+      <div *ngIf="errorForm != false" class="m-5 col-5 p-0">
+        <p class="text-danger">L'utilisateur n'existe pas ou il y a une erreur sur l'écriture.</p>
+      </div>
+      <div *ngIf="userSearch != null" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+        <div class="card w-100">
+            <div class="card-header">
+                {{ userSearch.status }}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ userSearch.username }} {{ userSearch.secondname }}</h5>
+                  <div class="d-flex my-2">
+                      <p *ngIf="userSearch.email != null" class="card-text mr-5">Email : <a href="mailto:{{ userSearch.email }}">{{ userSearch.email }}</a></p>
+                      <p *ngIf="userSearch.tel != null" class="card-text">Télephone : <a href="tel:{{ userSearch.tel }}">{{ userSearch.tel }}</a></p>
+                  </div>
+                <div>
+                    <button class="btn btn-warning text-light" data-toggle="modal" data-target="#modifierUser" (click)="updateModal(userSearch)" >Modifier</button>
+                    <button *ngIf="userSearch.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(userSearch)">Supprimer</button>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let user of users;" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
+        <div class="card w-100">
+            <div class="card-header">
+              {{ user.status }}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ user.username }} {{ user.secondname }}</h5>
+                <div class="d-flex my-2">
+                    <p *ngIf="user.email != null" class="card-text mr-5">Email : <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+                    <p *ngIf="user.tel != null" class="card-text">Télephone : <a href="tel:{{ user.tel }}">{{ user.tel }}</a></p>
+                </div>
+              <div>
+                  <button class="btn btn-warning text-light" data-toggle="modal" data-target="#modifierUser" (click)="updateModal(user)">Modifier</button>
+                  <button *ngIf="user.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(user)">Supprimer</button>
+              </div>
+            </div>
+        </div>
+    </div>
+  </section>
+</section>
+
+<app-footer class="bg-dark h-100 w-100"></app-footer>
+
+
+<!-- Modal Ajouter -->
+<div class="modal fade" id="ajoutuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un utilisateur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="modal-body" [formGroup]="userForm" (ngSubmit)="addUser()">
+        <label for="mail">Email</label>
+        <input type="text" class="form-control mt-1" id="mail" placeholder="E-mail" formControlName="email">
+        <label for="name">Nom</label>
+        <input type="text" class="form-control mt-1" id="name" placeholder="Nom" formControlName="username">
+        <label for="prenom">Prénom</label>
+        <input type="text" class="form-control mt-1" id="prenom" placeholder="Prénom" formControlName="secondName">
+        <label for="tel">Téléphone</label>
+        <input type="text" class="form-control mt-1" id="tel" placeholder="Téléphone" formControlName="tel">
+        <label for="password">Password</label>
+        <input type="text" class="form-control mt-1" id="tel" placeholder="Password" formControlName="password">
+        <label for="cpassword">Confirmation</label>
+        <input type="text" class="form-control mt-1" id="cpassword" placeholder="password" formControlName="cpassword">
+
+    <div class="mt-3">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-success ml-3" [disabled]="userForm.invalid">Ajouter</button>
+    </div>
+</form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="modifierUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier : </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="modal-body" [formGroup]="userForm" (ngSubmit)="updateUser()">
+        <label for="name">Nom</label>
+        <input type="text" class="form-control mt-1" id="name" placeholder="Nom" formControlName="username">
+        <label for="prenom">Prénom</label>
+        <input type="text" class="form-control mt-1" id="prenom" placeholder="Prénom" formControlName="secondName">
+        <div class="form-group mt-2">
+            <label for="exampleFormControlSelect1">Statut</label>
+            <select class="form-control" id="exampleFormControlSelect1" formControlName="status">
+              <option value="CLIENT">CLIENT</option>
+              <option value="DEVTEAM">DEVTEAM</option>
+              <option value="DESIGNERTEAM">DESIGNERTEAM</option>
+              <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+            </select>
+        </div>
+        <label for="tel">Téléphone</label>
+        <input type="text" class="form-control mt-1" id="tel" placeholder="Téléphone" formControlName="tel">
+    <div class="mt-3">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-success ml-3" [disabled]="userForm.invalid">Modifier</button>
+    </div>
+</form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Supprimer -->
+<div class="modal fade" id="supprimerUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer le site</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Etes vous sure de supprimer : {{ nameDelete }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-danger" (click)="deleteUser()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

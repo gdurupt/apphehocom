@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../interfaces/user';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-site',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiteComponent implements OnInit {
 
-  constructor() { }
+  user: User;
+
+  constructor(
+    private userService: UsersService
+  ) { }
 
   ngOnInit(): void {
+    this.getUser();
+  }
+
+  getUser(){
+    this.userService.getTokenUser().subscribe({
+      next: data => {
+        this.user = data;
+      },
+      error: error => {
+      }
+  });
   }
 
 }

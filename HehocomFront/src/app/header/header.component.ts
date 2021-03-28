@@ -22,7 +22,6 @@ export class HeaderComponent implements OnInit {
       this.userService.getTokenUser().subscribe({
         next: data => {
           this.user = data;
-          console.log(this.user);
         },
         error: error => {
           this.router.navigateByUrl('');

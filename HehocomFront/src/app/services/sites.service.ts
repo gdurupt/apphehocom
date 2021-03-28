@@ -51,14 +51,14 @@ getOneSiteById(id) : Observable<Site> {
 addSite(data){
   const body=JSON.stringify(data);
   const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.post<any>(environment.apiUrl + '/site', body,{'headers':headers});
+  return this.HttpClient.post<any>(environment.apiUrl + '/site/add', body,{'headers':headers});
 }
 
 /**
 *  
 *  Ajout d'un commentaire avec un fichier
 */
-AddComentAndFileBySite(file,id){
+AddFileBySite(id,file){
   
   const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')};
 

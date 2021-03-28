@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/dashboard');
     }
     this.initLoginForm();
-    sessionStorage.removeItem('tokenhehocom');
   }
 
   initLoginForm(){

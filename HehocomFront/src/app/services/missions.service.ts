@@ -26,6 +26,24 @@ getMissionBySite(id) : Observable<Mission[]> {
   return this.HttpClient.get<Mission[]>(environment.apiUrl + '/mission/' + id,{'headers':headers});
 }
 
+  /**
+* 
+* Recuperation des commentaires lié a un site
+*/
+getCountMissionBySite(id) {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<number>(environment.apiUrl + '/mission/count/' + id,{'headers':headers});
+}
+
+/**
+* 
+* Recuperation des commentaires lié a un site
+*/
+getLastMissionBySite(id) {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<Mission>(environment.apiUrl + '/mission/last/' + id,{'headers':headers});
+}
+
 
 /**
 *  
