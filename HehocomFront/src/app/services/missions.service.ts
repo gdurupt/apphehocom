@@ -21,9 +21,18 @@ export class MissionsService {
 * 
 * Recuperation des commentaires lié a un site
 */
-getMissionBySite(id) : Observable<Mission[]> {
+getMissionBySite(idSite,statut,offset) : Observable<Mission[]> {
   const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.get<Mission[]>(environment.apiUrl + '/mission/' + id,{'headers':headers});
+  return this.HttpClient.get<Mission[]>(environment.apiUrl + '/mission/' + idSite + '/' + statut + '/' + offset,{'headers':headers});
+}
+
+  /**
+* 
+* Recuperation des mission requete client
+*/
+getallMissionRequeteClientBySite(idSite) : Observable<Mission[]> {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<Mission[]>(environment.apiUrl + '/mission/requeteclient/' + idSite,{'headers':headers});
 }
 
   /**
@@ -62,7 +71,7 @@ AddMissionBySite(data){
 UpdateMissionBySite(data,id){
   const body=JSON.stringify(data);
   const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.put<any>(environment.apiUrl + '/mission' + id, body,{'headers':headers});
+  return this.HttpClient.put<any>(environment.apiUrl + '/mission/' + id, body,{'headers':headers});
 }
 
 /**

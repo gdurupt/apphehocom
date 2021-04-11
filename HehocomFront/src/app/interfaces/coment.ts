@@ -1,10 +1,10 @@
 export interface Coment {
-    content:string,
-    dateCreation:string,
-    example: string,
-    fileName:string,
-    id:	number,
+    id:number,
+    content: string,
+    dateCreation: string,
+    fileName: string,
+    nameUser: number,
     idSite:	number,
     idUser:	number,
-    status:	string
+    status: string
 }

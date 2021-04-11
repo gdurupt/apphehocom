@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit {
   sites: Site[];
   user: User;
 
+
+
   NameFile = 'Ajouter fichier';
   file;
   checkFile = true;
@@ -70,7 +72,14 @@ export class DashboardComponent implements OnInit {
       next: data => {
         this.sites = data;
         for (let index = 0; index < this.sites.length; index++) {
-         
+          this.missionService.getallMissionRequeteClientBySite(this.sites[index].id).subscribe({
+            next: data => {
+              this.sites[index].requeteClient = data.length;
+            },
+            error: error => {
+            }
+          });
+
           this.missionService.getLastMissionBySite(this.sites[index].id).subscribe({
             next: data => {
               if(data != null){
@@ -94,7 +103,7 @@ export class DashboardComponent implements OnInit {
         this.comentService.getLastComentBySite(this.sites[index].id).subscribe({
           next: data => {
             if(data != null){
-              this.sites[index].lastComment = 'Par ' + data.status + ' ajouté le ' + data.dateCreation;
+              this.sites[index].lastComment = 'Par ' + data.nameUser + ' ajouté le ' + data.dateCreation;
             }
           },
           error: error => {
@@ -168,7 +177,7 @@ export class DashboardComponent implements OnInit {
           this.comentService.getLastComentBySite(this.OneSite.id).subscribe({
           next: data => {
             if(data != null){
-              this.OneSite.lastComment = 'Par ' + data.status + ' ajouté le ' + data.dateCreation;
+              this.OneSite.lastComment = 'Par ' + data.nameUser + ' ajouté le ' + data.dateCreation;
             }
           },
           error: error => {
@@ -230,7 +239,7 @@ export class DashboardComponent implements OnInit {
     this.siteService.updateSite(this.uploadId,this.siteForm.value).subscribe({
       next: data => {
         this.getAllSiteByUser();
-        if(this.searchform.get('name').value != null){
+        if(this.searchform.get('name').value != ''){
           this.searchSiteName()
         }
       },

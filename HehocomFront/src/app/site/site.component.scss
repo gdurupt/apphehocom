@@ -1,0 +1,21 @@
+.cardPointer{
+    cursor: pointer;
+}
+
+.circle{
+    margin:10px;
+    width:130px;
+    background:white;
+    height:130px;
+    border-radius:100px;
+    text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.circle-success{
+    background-color: green !important;
+    color: white;
+}

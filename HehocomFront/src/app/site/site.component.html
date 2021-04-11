@@ -11,15 +11,209 @@
 <section class="d-flex mt-5">
 
     <app-header class="bg-dark col-lg-2"></app-header>
-    <section>
-        <div>
-            
-            
-        
-        </div>
-        <div class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
 
-          </div>
+    <section class="d-flex flex-column">
+      <div *ngIf="OneSite != null" class="card d-flex flex-row col-lg-11 m-4 p-0 position-relative">
+        <div class="col-3 p-0">
+            <div *ngIf="OneSite.presentation == null" class="h-100 d-flex align-items-center justify-content-center">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <img *ngIf="OneSite.presentation != null"  class="img-fluid" src="../../assets/image_presentation/{{ OneSite.presentation }}" alt="Card image cap">
+        </div>
+        <div class="col-9 d-flex flex-column my-4">
+          <h3 class="text-center h1">{{ OneSite.name }}</h3>
+        <div class="d-flex align-items-start justify-content-around">
+            <p>Statut : {{ OneSite.statut }}</p>
+            <p>Type : {{ OneSite.type }}</p>
+        </div>
+        <p>Date de création : {{ OneSite.dateCreation }}</p>
+        <div class="d-flex align-items-start justify-content-between">
+            <div>
+                <p>Nombre de missions réalisé : {{ OneSite.NumberMission }}</p>
+                <p>Nombre de commentaire : {{ OneSite.NumberComent}}</p>
+                <p>Derniere mission réalisé : {{ OneSite.lastMission }}</p>
+                <p>Date dernier commentaire ajouté : {{ OneSite.lastComment }}</p>
+            </div>
+        </div>
+        <div class="d-flex ">
+            <a class="mr-4" href="{{ OneSite.url }}">Site web</a><a href="{{ OneSite.url }}/wp-admin">BackOffice</a>
+        </div>
+        </div>
+        
+      </div>
+          <section class="d-flex align-items-start justify-content-center m-3">
+            <div class="col-lg-2 bg-dark d-flex flex-column align-items-center justify-content-center" *ngIf="OneSite != null && user != null">
+              <div class="circle" [ngClass]="checkLots(8)" (click)="changeLots(8)">
+                Performance, réf et RGPB
+              </div>
+              <div class="circle" [ngClass]="checkLots(7)" (click)="changeLots(7)">
+                Mise en ligne
+              </div>
+              <div class="circle" [ngClass]="checkLots(6)" (click)="changeLots(6)">
+                Interface d'administration
+              </div>
+              <div class="circle" [ngClass]="checkLots(5)" (click)="changeLots(5)">
+                Pré-prod
+              </div>
+              <div class="circle" [ngClass]="checkLots(4)" (click)="changeLots(4)">
+                Devellopement
+              </div>
+              <div class="circle" [ngClass]="checkLots(3)" (click)="changeLots(3)">
+                Serveur / NDD
+              </div>
+              <div class="circle" [ngClass]="checkLots(2)" (click)="changeLots(2)">
+                Maquette
+              </div>
+              <div class="circle" [ngClass]="checkLots(1)" (click)="changeLots(1)">
+                Mise en place
+              </div>
+            </div>
+            <div class="col-lg-5  p-2" *ngIf="missions != null">
+              <h2 class="text-center mb-3 text-light">Missions</h2>
+              <div class="mb-3">
+                <form class="input-group col-12 p-0" [formGroup]="missionSearch" (ngSubmit)="getMission()">
+                  <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Recherche de Mission</span></div>
+                  <select class="form-control" aria-describedby="nom-base" formControlName="statut">
+                      <option value="ATTENTE">Mission en attente</option>
+                      <option value="ENCOURS">Mission en cours</option>
+                      <option value="URGENT">Mission urgente</option>
+                      <option value="FAIT">Mission finis</option>
+                      <option value="REQUETECLIENT">En attente du client</option>
+                  </select>
+              <button class="ml-3 btn btn-primary" type="submit" [disabled]="missionSearch.invalid">Rechercher</button>
+              </form>
+              </div>
+              <div class="d-flex align-items-center justify-content-between w-100">
+                  <span class="text-light">
+                      Pour modifier une mission veuillez cliquer dessus.
+                  </span>
+                  <button class="btn btn-success mb-3" type="button" data-toggle="modal" data-target="#mission" (click)="addMission()">Ajouter une mission</button>
+              </div>
+              <div class="card mb-3" style="width: 100%;" *ngFor="let mission of missions" (click)="updateMission(mission)" [ngClass]="checkUser(mission.idUser)" >
+                <div class="card-body">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">{{ mission.name }}</h5>
+                    <p class="card-link">Type : {{ mission.type }}</p>
+                    <p class="card-link ml-0">Statut : {{ mission.statut }}</p>
+                  </div>
+                  <h6 class="card-subtitle mb-2 text-muted">Derniere mise a jour : {{ mission.dateCreation }}</h6>
+                  <p class="card-text">{{ mission.content }}</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <fa-icon class="text-light h4 mr-2 cardPointer" [icon]="faArrowLeft" *ngIf="offsetMission > 0" (click)="backMission()"></fa-icon>
+                <fa-icon class="text-light h4 ml-2 cardPointer" [icon]="faArrowRight" *ngIf="nextArrowMission == true" (click)="nextMission()"></fa-icon>
+              </div>
+            </div>
+            <div class="col-lg-5 p-2" *ngIf="coments != null">
+              <h2 class="text-center mb-3 text-light">Commentaires</h2>
+              <div class="d-flex align-items-center justify-content-between w-100">
+                <span class="text-light">
+                  Pour modifier un commentaire veuillez cliquer dessus.
+                </span>
+                <button class="btn btn-success mb-3" type="button" data-toggle="modal" data-target="#coment" (click)="addComent()">Ajouter un commentaire</button>
+            </div>
+              <div class="card mb-3 cardComent" style="width: 100%;" *ngFor="let coment of coments; let nextArrowComent = index" (click)="updateComent(coment)" [ngClass]="checkUser(coment.idUser)">
+                <div class="card-body">
+                  <h5 class="card-title">{{ coment.nameUser }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Envoyer le : {{ coment.dateCreation }}</h6>
+                  <p class="card-text">{{ coment.content }}</p>
+                  <p class="card-link" *ngIf="coment.fileName != null"><a href="download/../../../assets/fichiers/{{ coment.fileName }}" download="{{ coment.fileName }}">Télécharger fichier</a></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <fa-icon class="text-light h4 mr-2 cardPointer" [icon]="faArrowLeft" *ngIf="offsetComent > 0" (click)="backComent()"></fa-icon>
+                <fa-icon class="text-light h4 ml-2 cardPointer" [icon]="faArrowRight" *ngIf="nextArrowComent == true" (click)="nextComent()"></fa-icon>
+              </div>
+            </div>
+          </section>
     </section>
+
 </section>
+
+
 <app-footer class="bg-dark h-100 w-100"></app-footer>
+
+
+<!-- Modal Mission-->
+<div class="modal fade" id="mission" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter ou modifier Mission</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <form class="modal-body" [formGroup]="missionForm" (ngSubmit)="mission()">
+              <div class="w-100 custom-file mb-3">
+                <label for="nomMission">Nom de la mission</label>
+                <input type="text" formControlName="name" id="nomMission" placeholder="Nom de la mission" class="form-control mb-3">
+                <div class="form-group mt-2">
+                  <label for="exampleFormControlSelect2">Statut</label>
+                  <select class="form-control" id="exampleFormControlSelect2" formControlName="statut">
+                      <option value="URGENT">Urgent</option>
+                      <option value="ENCOURS">En cours</option>
+                      <option value="ATTENTE">En attente</option>
+                      <option value="FAIT">Fait</option>
+                      <option value="REQUETECLIENT">Requete client</option>
+                  </select>
+                </div>
+                <div class="form-group mt-2">
+                  <label for="exampleFormControlSelect3">Type</label>
+                  <select class="form-control" id="exampleFormControlSelect3" formControlName="type">
+                      <option value="MAJ">Mise a jour</option>
+                      <option value="PUB">Mission Publicité</option>
+                  </select>
+                </div>
+                <label for="messageMission">Message de la mission</label>
+                <textarea class="form-control w-100" rows="5" id="messageMission" formControlName="content" placeholder="Message"></textarea>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" (click)="deleteMission()" *ngIf="idMission != 0">Supprimer</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-success" [disabled]="missionForm.invalid">Confirmer</button>
+                </div>
+          </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Commentaire -->
+<div class="modal fade" id="coment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter ou modifier Commentaire</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <form class="modal-body" enctype="multipart/form-data"  [formGroup]="comentForm" (ngSubmit)="coment()">
+              <div class="w-100 custom-file mb-3">
+                  <label for="messageMission">Message</label>
+                  <textarea class="form-control w-100" rows="5" formControlName="content" placeholder="Message"></textarea>
+                  <div *ngIf="idComent == 0">
+                    <div class="form-check">
+                      <input class="form-check-input mb-3" type="checkbox"  id="flexCheckIndeterminate" (click)="trueFile()">
+                      <label class="form-check-label mb-3" for="flexCheckIndeterminate">
+                        Ajouter fichier <fa-icon [icon]="faFileUpload"></fa-icon>
+                      </label>
+                    </div>
+                    <div class="custom-file" *ngIf="this.uploadFile">
+                      <input type="file" class="custom-file-input mb-3" id="customFile" (change)="changefile($event)"  multiple>
+                      <label class="custom-file-label" for="customFile">{{ NameFile }}</label>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer mt-3">
+                  <button type="button" class="btn btn-danger" (click)="deleteComent()" *ngIf="idComent != 0">Supprimer</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-success" [disabled]="comentForm.invalid">Confirmer</button>
+                </div>
+          </form>
+    </div>
+  </div>
+</div>

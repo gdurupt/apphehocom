@@ -13,5 +13,7 @@ export interface Site {
     lastMission:string,
     NumberMission:number,
     lastComment:string,
-    NumberComent:number
+    NumberComent:number,
+    lots:number,
+    requeteClient:number;
 }

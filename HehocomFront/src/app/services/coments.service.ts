@@ -19,9 +19,9 @@ export class ComentsService {
 * 
 * Recuperation des commentaires lié a un site
 */
-getComentBySite(id) : Observable<Coment[]> {
+getComentBySite(id,offset) : Observable<Coment[]> {
   const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.get<Coment[]>(environment.apiUrl + '/coment/' + id,{'headers':headers});
+  return this.HttpClient.get<Coment[]>(environment.apiUrl + '/coment/' + id + '/' + offset,{'headers':headers});
 }
 
   /**
@@ -83,7 +83,7 @@ AddComentAndFileBySite(data,file){
 UpdateComentBySite(data,id){
   const body=JSON.stringify(data);
   const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.put<any>(environment.apiUrl + '/coment' + id, body,{'headers':headers});
+  return this.HttpClient.put<any>(environment.apiUrl + '/coment/' + id, body,{'headers':headers});
 }
 
 /**

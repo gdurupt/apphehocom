@@ -19,9 +19,9 @@ export class ServicesService {
 * 
 * Recuperation des services
 */
-getAllService(id) : Observable<Service[]> {
+getAllService() : Observable<Service[]> {
   const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.get<Service[]>(environment.apiUrl + '/service/' + id,{'headers':headers});
+  return this.HttpClient.get<Service[]>(environment.apiUrl + '/service/',{'headers':headers});
 }
 
 

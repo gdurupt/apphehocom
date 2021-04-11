@@ -12,14 +12,52 @@
 
     <app-header class="bg-dark col-lg-2"></app-header>
     <section>
-        <div>
-            
+        <div class="mb-4">
+            <h2 class="text-center text-light text-uppercase">Les services</h2>
             
         
         </div>
-        <div class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
-
-          </div>
+        <div class="d-flex flex-wrap">
+        <div class="card m-1" style="width: 18rem;" *ngFor="let service of services; let id = index;" [ngClass]="checkUser()" (click)="changeService(service,id)">
+          <form class="card-body" [formGroup]="serviceForm" (ngSubmit)="updateService(service)">
+            <h5 class="card-title text-center" *ngIf="!service.BoolToChange">{{ service.nom }}</h5>
+            <input class="form-control" type="text" *ngIf="service.BoolToChange" formControlName="nom" value="{{ service.nom }}">
+            <p class="card-text text-center" *ngIf="!service.BoolToChange">{{ service.content }}</p>
+            <textarea class="form-control" cols="30" rows="10" *ngIf="service.BoolToChange" formControlName="content" value="{{ service.content }}"></textarea>
+            <div class="modal-footer" *ngIf="service.BoolToChange">
+              <button type="button" class="btn btn-danger" (click)="deleteService(service)">Supprimer</button>
+              <button type="submit" class="btn btn-success" [disabled]="serviceForm.invalid">Confirmer</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
 </section>
 <app-footer class="bg-dark h-100 w-100"></app-footer>
+
+
+
+<!-- Modal Service-->
+<div class="modal fade" id="service" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un service</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <form class="modal-body" [formGroup]="serviceForm" (ngSubmit)="addService()">
+              <div class="w-100 custom-file mb-3">
+                <label for="nomService">Nom du service</label>
+                <input type="text" formControlName="nom" id="nomService" placeholder="Nom du service" class="form-control mb-3">
+                <textarea class="form-control w-100" rows="5" formControlName="content" placeholder="Description"></textarea>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                  <button type="submit" class="btn btn-success" [disabled]="serviceForm.invalid">Confirmer</button>
+                </div>
+          </form>
+    </div>
+  </div>
+</div>

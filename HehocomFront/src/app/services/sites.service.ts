@@ -28,6 +28,15 @@ getAllSite() : Observable<Site[]> {
 
 /**
 * 
+* Recuperation Tout les sites lier a un hebergement
+*/
+getAllSiteByHebergement(id) : Observable<Site[]> {
+  const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.get<Site[]>(environment.apiUrl + '/site/hebergement/' + id,{'headers':headers});
+}
+
+/**
+* 
 * Recuperation d'un site par son nom
 */
 getOneSiteByName(name) : Observable<Site> {
@@ -81,12 +90,23 @@ updateSite(id,data){
 
 /**
 *  
+*  Modification lot Site
+*/
+updateLot(idSite,lot){
+  let body;
+  const headers = {'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
+  return this.HttpClient.put<any>(environment.apiUrl + '/site/update/lots/' + lot + '/' + idSite,body,{'headers':headers});
+}
+
+/**
+*  
 *  Modification hebergement Site
 */
 updateHebergementSite(idSite,idHebergement){
   const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
-  return this.HttpClient.put<any>(environment.apiUrl + '/site/update/' + idSite + '/' + idHebergement,{'headers':headers});
+  return this.HttpClient.get<any>(environment.apiUrl + '/site/update/' + idSite + '/' + idHebergement,{'headers':headers});
 }
+
 
 /**
 *  
