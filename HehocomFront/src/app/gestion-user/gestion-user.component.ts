@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../interfaces/user';
 import { UsersService } from '../services/users.service';
 import * as $ from 'jquery';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gestion-user',
@@ -30,7 +31,8 @@ export class GestionUserComponent implements OnInit {
 
   constructor(
     private userService: UsersService,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private router : Router
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,9 @@ export class GestionUserComponent implements OnInit {
     this.userService.getTokenUser().subscribe({
       next: data => {
         this.userCo = data;
+        if(this.userCo.status == 'CLIENT' || data == null){
+          this.router.navigateByUrl('');
+        }
       },
       error: error => {
       }

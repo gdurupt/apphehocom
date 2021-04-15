@@ -91,7 +91,7 @@ export class ServiceComponent implements OnInit {
   }
 
   checkUser(){
-    if(this.user.status == 'ADMINISTRATOR'){
+    if(this.user.status != 'CLIENT'){
       return 'cardPointer';
     }else{
       return '';
@@ -99,11 +99,12 @@ export class ServiceComponent implements OnInit {
   }
 
   changeService(service : Service,id){
-
-    for (let index = 0; index < this.services.length; index++) {
-      this.services[index].BoolToChange = false;
+    if(this.user.status != 'CLIENT'){
+      for (let index = 0; index < this.services.length; index++) {
+        this.services[index].BoolToChange = false;
+      }
+  
+      this.services[id].BoolToChange = true;
     }
-
-    this.services[id].BoolToChange = true;
   }
 }

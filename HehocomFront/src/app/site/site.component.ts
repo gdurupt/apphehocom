@@ -1,7 +1,7 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Coment } from '../interfaces/coment';
 import { Mission } from '../interfaces/mission';
 import { Site } from '../interfaces/site';
@@ -12,6 +12,9 @@ import { SitesService } from '../services/sites.service';
 import { UsersService } from '../services/users.service';
 import * as $ from 'jquery';
 import { faFileUpload, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { ServicesService } from '../services/services.service';
+import { Service } from '../interfaces/service';
+import { ServiceBySiteService } from '../services/service-by-site.service';
 
 
 
@@ -26,7 +29,8 @@ export class SiteComponent implements OnInit {
   OneSite: Site;
   missions: Mission[];
   coments:Coment[];
-
+  servicesOnSite: Service[];
+  services: Service[];
 
   idSite;
 
@@ -57,7 +61,10 @@ export class SiteComponent implements OnInit {
     private route: ActivatedRoute,
     private missionService: MissionsService,
     private comentService: ComentsService,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private router: Router,
+    private serviceBySiteService: ServiceBySiteService,
+    private serviceService: ServicesService
   ) { }
 
   ngOnInit(): void {
@@ -123,14 +130,47 @@ export class SiteComponent implements OnInit {
   });
   }
 
+  getServiceByIdSite(){
+    this.serviceBySiteService.getServiceBySite(this.OneSite.id).subscribe({
+      next: data => {
+        this.servicesOnSite = data;
+        this.getAllService();
+      },
+      error: error => {
+      }
+  });
+  }
+
+  getAllService(){
+    this.serviceService.getAllService().subscribe({
+      next: data => {
+        for (let index = 0; index < data.length; index++) {
+          for (let kindex = 0; kindex < this.servicesOnSite.length; kindex++) {
+            if(this.servicesOnSite[kindex].id == data[index].id){
+              data.splice(index, 1);
+            }         
+          }  
+        }
+        this.services = data;
+      },
+      error: error => {
+      }
+  });
+  }
+
 
   getSite(name){
     this.siteService.getOneSiteByName(name).subscribe({
       next: data => {
+        if(data == null){
+          this.router.navigateByUrl('');
+        }
+
           this.OneSite = data;
           this.idSite = data.id;
           this.getMission();
           this.getComent();
+          this.getServiceByIdSite();
           this.missionForm.get('idSite').setValue(data.id);
           this.comentForm.get('idSite').setValue(data.id);
           if(this.OneSite != undefined){
@@ -339,13 +379,15 @@ export class SiteComponent implements OnInit {
   }
 
   changeLots(lot){
-    this.siteService.updateLot(this.idSite,lot).subscribe({
-      next: data => {
-       this.OneSite.lots = lot;
-      },
-      error: error => {
-      }
-  });
+    if(this.user.status != 'CLIENT'){
+      this.siteService.updateLot(this.idSite,lot).subscribe({
+        next: data => {
+         this.OneSite.lots = lot;
+        },
+        error: error => {
+        }
+    });
+    }
   }
 
 }

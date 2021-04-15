@@ -7,6 +7,7 @@ import { UsersService } from '../services/users.service';
 import * as $ from 'jquery';
 import { SitesService } from '../services/sites.service';
 import { Site } from '../interfaces/site';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hebergement',
@@ -37,7 +38,8 @@ export class HebergementComponent implements OnInit {
     private userService: UsersService,
     private herbergermentService: HebergementsService,
     private formbuilder: FormBuilder,
-    private siteService: SitesService
+    private siteService: SitesService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +53,9 @@ export class HebergementComponent implements OnInit {
     this.userService.getTokenUser().subscribe({
       next: data => {
         this.userCo = data;
+        if(this.userCo.status == 'CLIENT' || data == null){
+          this.router.navigateByUrl('');
+        }
       },
       error: error => {
       }

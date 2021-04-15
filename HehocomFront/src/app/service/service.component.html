@@ -21,10 +21,10 @@
         <div class="card m-1" style="width: 18rem;" *ngFor="let service of services; let id = index;" [ngClass]="checkUser()" (click)="changeService(service,id)">
           <form class="card-body" [formGroup]="serviceForm" (ngSubmit)="updateService(service)">
             <h5 class="card-title text-center" *ngIf="!service.BoolToChange">{{ service.nom }}</h5>
-            <input class="form-control" type="text" *ngIf="service.BoolToChange" formControlName="nom" value="{{ service.nom }}">
+            <input  class="form-control" type="text" *ngIf="service.BoolToChange && user.status != 'CLIENT'" formControlName="nom" value="{{ service.nom }}">
             <p class="card-text text-center" *ngIf="!service.BoolToChange">{{ service.content }}</p>
-            <textarea class="form-control" cols="30" rows="10" *ngIf="service.BoolToChange" formControlName="content" value="{{ service.content }}"></textarea>
-            <div class="modal-footer" *ngIf="service.BoolToChange">
+            <textarea class="form-control" cols="30" rows="10" *ngIf="service.BoolToChange && user.status != 'CLIENT'" formControlName="content" value="{{ service.content }}"></textarea>
+            <div class="modal-footer" *ngIf="service.BoolToChange && user.status != 'CLIENT'">
               <button type="button" class="btn btn-danger" (click)="deleteService(service)">Supprimer</button>
               <button type="submit" class="btn btn-success" [disabled]="serviceForm.invalid">Confirmer</button>
             </div>
