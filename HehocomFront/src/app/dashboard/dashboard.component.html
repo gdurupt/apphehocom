@@ -253,10 +253,12 @@
                     <option value="MOBILE">Appli mobile</option>
                 </select>
             </div>
-            <label for="url mt-2">Url du site</label>
+            <label for="url">DAte de création</label>
+            <input type="date" class="form-control mt-1" id="url" formControlName="date_creation">
+            <label for="url">Url du site</label>
             <input type="text" class="form-control mt-1" id="url" placeholder="Url du site" formControlName="url">
-            <label for="url mt-2">Base de donnée</label>
-            <input type="text" class="form-control mt-1" id="url" placeholder="Url du site" formControlName="bdd_name">
+            <label for="url">Base de donnée</label>
+            <input type="text" class="form-control mt-1" id="url" placeholder="Base de donnée" formControlName="bdd_name">
         <div class="mt-3">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
             <button type="submit" class="btn btn-success ml-3" [disabled]="siteForm.invalid">Modifier</button>

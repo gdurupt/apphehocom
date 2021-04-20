@@ -6,8 +6,8 @@ import { HebergementsService } from '../services/hebergements.service';
 import { UsersService } from '../services/users.service';
 import * as $ from 'jquery';
 import { SitesService } from '../services/sites.service';
-import { Site } from '../interfaces/site';
 import { Router } from '@angular/router';
+import { formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-hebergement',
@@ -34,13 +34,20 @@ export class HebergementComponent implements OnInit {
   errorAddForm = false;
   errorAddSiteToH = false;
 
+
+  now = new Date();
+  nowFormatted: string;
+  tableDate;
+
   constructor(
     private userService: UsersService,
     private herbergermentService: HebergementsService,
     private formbuilder: FormBuilder,
     private siteService: SitesService,
     private router: Router
-  ) { }
+  ) {
+    this.nowFormatted = formatDate(this.now, 'dd/MM/yyyy', 'en-US');
+   }
 
   ngOnInit(): void {
     this.getUser();
@@ -66,9 +73,20 @@ export class HebergementComponent implements OnInit {
     this.herbergermentService.getHebergementBySite().subscribe({
       next: data => {
         this.hebergements = data;
+
+        this.tableDate = this.nowFormatted.split('/');
+
         for (let index = 0; index < this.hebergements.length; index++) {
           this.siteService.getAllSiteByHebergement(this.hebergements[index].id).subscribe({
             next: data => {
+              for (let index = 0; index < data.length; index++) {
+                let tableDateSite = data[index].dateCreation.split('/');
+                if(tableDateSite[1] == this.tableDate[1]){
+                  data[index].datealert = true;
+                }else{
+                  data[index].datealert = false;
+                }
+              }
               this.hebergements[index].sites = data;
             },
             error: error => {
@@ -114,8 +132,17 @@ export class HebergementComponent implements OnInit {
     this.herbergermentService.getHebergementByName(this.searchform.get('name').value).subscribe({
       next: data => {
         this.hebergementSearch = data;
+        this.tableDate = this.nowFormatted.split('/');
         this.siteService.getAllSiteByHebergement(this.hebergementSearch.id).subscribe({
           next: data => {
+            for (let index = 0; index < data.length; index++) {
+              let tableDateSite = data[index].dateCreation.split('/');
+              if(tableDateSite[1] == this.tableDate[1]){
+                data[index].datealert = true;
+              }else{
+                data[index].datealert = false;
+              }
+            }
             this.hebergementSearch.sites = data;
           },
           error: error => {

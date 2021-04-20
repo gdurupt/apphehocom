@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
           this.user = data;
         },
         error: error => {
-          this.router.navigateByUrl('');
+          this.deconnexion();
         }
     });
     }else{

@@ -28,8 +28,15 @@
       </div>
       <div *ngIf="userSearch != null" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
         <div class="card w-100">
-            <div class="card-header">
-                {{ userSearch.status }}
+            <div class="card-header d-flex ">
+              <h5>{{ userSearch.status }}</h5>
+                <div *ngIf="userSearch.status == 'CLIENT'" class="d-flex align-items-center justify-content-end col-lg-11 px-3">
+                  <form class="input-group col-6 p-0" [formGroup]="siteForm" (ngSubmit)="addSiteToUser(userSearch.id)">
+                    <div class="input-group-prepend"><span class="input-group-text">Recherche de Service</span></div>
+                    <input type="text" class="form-control" placeholder="Nom site" formControlName="nom">
+                <button class="ml-3 btn btn-primary" type="submit" [disabled]="siteForm.invalid">Ajouter</button>
+                </form>
+                </div>
               </div>
               <div class="card-body">
                 <h5 class="card-title">{{ userSearch.username }} {{ userSearch.secondname }}</h5>
@@ -42,14 +49,25 @@
                     <button *ngIf="userSearch.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(userSearch)">Supprimer</button>
                 </div>
               </div>
+              <div class="card-footer d-flex" *ngIf="userSearch.status == 'CLIENT'">
+                <button class="btn btn-primary mr-2" *ngFor="let site of userSearch.site" (click)='removeUserByIdSite(this.site.id,userSearch.id)'>{{ site.name }}</button>
+            </div>
         </div>
       </div>
     </div>
     <div *ngFor="let user of users;" class="card d-flex flex-row col-lg-11 m-5 p-0 position-relative">
         <div class="card w-100">
-            <div class="card-header">
-              {{ user.status }}
+            <div class="card-header d-flex ">
+              <h5>{{ user.status }}</h5>
+              <div *ngIf="user.status == 'CLIENT'" class="d-flex align-items-center justify-content-end col-lg-11 px-3">
+                <form class="input-group col-6 p-0" [formGroup]="siteForm" (ngSubmit)="addSiteToUser(user.id)">
+                  <div class="input-group-prepend"><span class="input-group-text">Recherche de Service</span></div>
+                  <input type="text" class="form-control" placeholder="Nom site" formControlName="nom">
+              <button class="ml-3 btn btn-primary" type="submit" [disabled]="siteForm.invalid">Ajouter</button>
+              </form>
+              </div>
             </div>
+            
             <div class="card-body">
               <h5 class="card-title">{{ user.username }} {{ user.secondname }}</h5>
                 <div class="d-flex my-2">
@@ -60,6 +78,9 @@
                   <button class="btn btn-warning text-light" data-toggle="modal" data-target="#modifierUser" (click)="updateModal(user)">Modifier</button>
                   <button *ngIf="user.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(user)">Supprimer</button>
               </div>
+            </div>
+            <div class="card-footer d-flex" *ngIf="user.status == 'CLIENT'">
+                <button class="btn btn-primary mr-2" *ngFor="let site of user.site" (click)='removeUserByIdSite(this.site.id,user.id)'>{{ site.name }}</button>
             </div>
         </div>
     </div>

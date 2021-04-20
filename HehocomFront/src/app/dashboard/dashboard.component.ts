@@ -207,7 +207,8 @@ export class DashboardComponent implements OnInit {
       statut: ['',Validators.required],
       type: ['',Validators.required],
       url: ['',Validators.required],
-      bdd_name:['']
+      bdd_name:[''],
+      date_creation:['',Validators.required]
     })
   }
 
@@ -231,7 +232,7 @@ export class DashboardComponent implements OnInit {
     this.siteForm.get('type').setValue(site.type);
     this.siteForm.get('url').setValue(site.url);
     this.siteForm.get('bdd_name').setValue(site.bdd_name);
-
+    this.siteForm.get('date_creation').setValue(site.dateCreation);
   }
 
   updateSite(){

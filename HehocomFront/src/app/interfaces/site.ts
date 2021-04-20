@@ -15,5 +15,6 @@ export interface Site {
     lastComment:string,
     NumberComent:number,
     lots:number,
-    requeteClient:number;
+    requeteClient:number,
+    datealert:boolean
 }

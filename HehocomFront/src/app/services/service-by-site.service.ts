@@ -34,4 +34,11 @@ AddServiceBySite(data){
   const headers = { 'content-type': 'application/json','Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.post<any>(environment.apiUrl + '/serviceBySite', body,{'headers':headers});
 }
+
+
+deleteIdService(id,idSite){
+  const headers = {'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')};
+  return this.HttpClient.delete<any>(environment.apiUrl + '/serviceBySite/' + id + '/' + idSite,{'headers':headers});
+}
+
 }

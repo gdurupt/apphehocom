@@ -38,7 +38,7 @@
                           <p *ngIf="hebergementSearch.type != null" class="card-text">Type: {{ hebergementSearch.type }}</p>
                       </div>
                       <ul *ngFor="let site of hebergementSearch.sites">
-                        <li>{{ site.name }} : {{ site.dateCreation }}</li>
+                        <li>{{ site.name }} : {{ site.dateCreation }}<span *ngIf="site.datealert" class="ml-3 text-danger font-weight-bold">Attention Mois Anniversaire</span></li>
                       </ul>
                     <div>
                         <button class="btn btn-warning text-light" data-toggle="modal" data-target="#modifierUser" (click)="updateModal(hebergementSearch)">Modifier</button>
@@ -70,7 +70,7 @@
                       <p *ngIf="hebergement.type != null" class="card-text">Type: {{ hebergement.type }}</p>
                   </div>
                   <ul *ngFor="let site of hebergement.sites">
-                    <li>{{ site.name }} : {{ site.dateCreation }}</li>
+                    <li>{{ site.name }} : {{ site.dateCreation }} <span *ngIf="site.datealert" class="ml-3 text-danger font-weight-bold">Attention Mois Anniversaire</span></li>
                   </ul>
                 <div>
                     <button class="btn btn-warning text-light" data-toggle="modal" data-target="#modifierUser" (click)="updateModal(hebergement)">Modifier</button>

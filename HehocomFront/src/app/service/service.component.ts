@@ -106,5 +106,8 @@ export class ServiceComponent implements OnInit {
   
       this.services[id].BoolToChange = true;
     }
+
+    this.serviceForm.get('nom').setValue(service.nom);
+    this.serviceForm.get('content').setValue(service.content);
   }
 }

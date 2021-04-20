@@ -4,6 +4,8 @@ import { User } from '../interfaces/user';
 import { UsersService } from '../services/users.service';
 import * as $ from 'jquery';
 import { Router } from '@angular/router';
+import { UserbysiteService } from '../services/userbysite.service';
+import { Site } from '../interfaces/site';
 
 @Component({
   selector: 'app-gestion-user',
@@ -16,6 +18,7 @@ export class GestionUserComponent implements OnInit {
   users: User[];
 
   userForm: FormGroup;
+  siteForm: FormGroup;
 
   deleteId = 0;
   nameDelete;
@@ -32,7 +35,8 @@ export class GestionUserComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private formbuilder: FormBuilder,
-    private router : Router
+    private router : Router,
+    private UserbysiteService: UserbysiteService
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +62,17 @@ export class GestionUserComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: data => {
         this.users = data;
+
+        for (let index = 0; index < this.users.length; index++) {
+          this.UserbysiteService.getAllSiteByUser(this.users[index].id).subscribe({
+            next: data => {
+              this.users[index].site = data;
+            },
+            error: error => {
+            }
+        });
+          
+        }
       },
       error: error => {
       }
@@ -80,6 +95,14 @@ export class GestionUserComponent implements OnInit {
     this.userService.getOneUserByMail(this.searchform.get('email').value).subscribe({
       next: data => {
         this.userSearch = data;
+          this.UserbysiteService.getAllSiteByUser(this.userSearch.id).subscribe({
+            next: data => {
+              this.userSearch.site = data;
+            },
+            error: error => {
+            }
+        });
+          
         this.errorForm = false;
         if(data == null){
           this.errorForm = true;
@@ -124,6 +147,10 @@ export class GestionUserComponent implements OnInit {
       cpassword: [''],
       password: [''],
       status: ['']
+    })
+
+    this.siteForm = this.formbuilder.group({
+      nom: ['',Validators.required],
     })
   }
 
@@ -186,6 +213,29 @@ $('#modifierUser').modal('hide');
         $('#ajouteruser').modal('hide');
         this.getAllUser();
 
+      },
+      error: error => {
+      }
+  });
+  }
+
+  addSiteToUser(id){
+    this.UserbysiteService.adUserBySite(this.siteForm.get('nom').value,id).subscribe({
+      next: data => {
+       this.getAllUser();
+       this.searchUserName()
+      },
+      error: error => {
+      }
+  });
+  }
+
+
+  removeUserByIdSite(idSite,idUser){
+    this.UserbysiteService.removeUserBySite(idSite,idUser).subscribe({
+      next: data => {
+       this.getAllUser();
+       this.searchUserName()
       },
       error: error => {
       }

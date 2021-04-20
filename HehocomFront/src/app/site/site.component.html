@@ -44,16 +44,16 @@
         
       </div>
       <div *ngIf="services != null" class="d-flex align-items-center justify-content-end col-lg-11 px-3">
-        <form class="input-group col-6 p-0">
+        <form class="input-group col-6 p-0" [formGroup]="serviceForm" (ngSubmit)="addService()">
           <div class="input-group-prepend"><span class="input-group-text" id="nom-base">Recherche de Service</span></div>
-          <select class="form-control" aria-describedby="nom-base">
-              <option *ngFor="let oneService of services" value="{{ oneService.nom }}">{{ oneService.nom }}</option>
+          <select class="form-control" aria-describedby="nom-base" formControlName="idService">
+              <option *ngFor="let oneService of services" value="{{ oneService.id }}">{{ oneService.nom }}</option>
           </select>
-      <button class="ml-3 btn btn-primary" type="submit">Ajouter</button>
+      <button class="ml-3 btn btn-primary" type="submit" [disabled]="serviceForm.invalid">Ajouter</button>
       </form>
       </div>
       <div *ngIf="servicesOnSite != null" class="card d-flex flex-wrap flex-row col-lg-11 m-4 py-3 position-relative" > 
-        <button *ngFor="let service of servicesOnSite" class="btn btn-success mx-3 col-1">
+        <button *ngFor="let service of servicesOnSite" class="btn btn-success mx-3 col-1" (click)='removeService(service.id)'>
           {{ service.nom }}
         </button>
       </div>

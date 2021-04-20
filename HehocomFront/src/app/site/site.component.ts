@@ -37,6 +37,7 @@ export class SiteComponent implements OnInit {
   missionSearch: FormGroup;
   missionForm: FormGroup;
   comentForm: FormGroup;
+  serviceForm:FormGroup;
 
   idMission = 0;
   idComent = 0;
@@ -78,6 +79,11 @@ export class SiteComponent implements OnInit {
       statut:['REQUETECLIENT',Validators.required]
     });
 
+    this.serviceForm = this.formbuilder.group({
+      idService:['',Validators.required],
+      idSite:''
+    });
+
     this.missionForm = this.formbuilder.group({
       content:['',Validators.required],
       idSite:	'',
@@ -90,6 +96,17 @@ export class SiteComponent implements OnInit {
       content: ['',Validators.required],
       idSite:	''
     });
+  }
+
+  addService(){
+    this.serviceForm.get('idSite').setValue(this.OneSite.id);
+    this.serviceBySiteService.AddServiceBySite(this.serviceForm.value).subscribe({
+      next: data => {
+        this.getServiceByIdSite();
+      },
+      error: error => {
+      }
+  });
   }
 
   getUser(){
@@ -135,6 +152,16 @@ export class SiteComponent implements OnInit {
       next: data => {
         this.servicesOnSite = data;
         this.getAllService();
+      },
+      error: error => {
+      }
+  });
+  }
+
+  removeService(id){
+    this.serviceBySiteService.deleteIdService(id,this.OneSite.id).subscribe({
+      next: data => {
+        this.getServiceByIdSite()
       },
       error: error => {
       }
