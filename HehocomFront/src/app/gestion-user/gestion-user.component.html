@@ -30,7 +30,7 @@
         <div class="card w-100">
             <div class="card-header d-flex ">
               <h5>{{ userSearch.status }}</h5>
-                <div *ngIf="userSearch.status == 'CLIENT'" class="d-flex align-items-center justify-content-end col-lg-11 px-3">
+                <div *ngIf="userSearch.status == 'CLIENT' && userSearch != null" class="d-flex align-items-center justify-content-end col-lg-11 px-3">
                   <form class="input-group col-6 p-0" [formGroup]="siteForm" (ngSubmit)="addSiteToUser(userSearch.id)">
                     <div class="input-group-prepend"><span class="input-group-text">Recherche de Service</span></div>
                     <input type="text" class="form-control" placeholder="Nom site" formControlName="nom">
@@ -49,7 +49,7 @@
                     <button *ngIf="userSearch.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(userSearch)">Supprimer</button>
                 </div>
               </div>
-              <div class="card-footer d-flex" *ngIf="userSearch.status == 'CLIENT'">
+              <div class="card-footer d-flex" *ngIf="userSearch.status == 'CLIENT' && userSearch != null">
                 <button class="btn btn-primary mr-2" *ngFor="let site of userSearch.site" (click)='removeUserByIdSite(this.site.id,userSearch.id)'>{{ site.name }}</button>
             </div>
         </div>
@@ -79,7 +79,7 @@
                   <button *ngIf="user.id != userCo.id" class="btn btn-danger ml-3" data-toggle="modal" data-target="#supprimerUser" (click)="deleteModal(user)">Supprimer</button>
               </div>
             </div>
-            <div class="card-footer d-flex" *ngIf="user.status == 'CLIENT'">
+            <div class="card-footer d-flex" *ngIf="user.status == 'CLIENT' && user != null">
                 <button class="btn btn-primary mr-2" *ngFor="let site of user.site" (click)='removeUserByIdSite(this.site.id,user.id)'>{{ site.name }}</button>
             </div>
         </div>
