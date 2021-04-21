@@ -6,8 +6,8 @@ import javax.validation.constraints.NotNull;
 
 public class CreateMemberForm {
 
-	@NotNull(message = "Un pseudo est requis")
-	@NotBlank(message = "Un pseudo ne peut être vide")
+	@NotNull(message = "Un nom est requis")
+	@NotBlank(message = "Un nom ne peut être vide")
 	private String username;
 
 	@NotBlank(message = "l'adresse mail ne peut être vide")
@@ -21,16 +21,29 @@ public class CreateMemberForm {
 	@NotNull(message = "le mot de passe est requis")
 	private String cpassword;
 
+	@NotNull(message = "Un prénom est requis")
+	@NotBlank(message = "Un prénom ne peut être vide")
+	private String secondName;
+
 	public CreateMemberForm() {
 
 	}
 
-	public CreateMemberForm(String username, String email, String password, String cpassword) {
+	public CreateMemberForm(String username, String email, String password, String cpassword, String secondName) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.cpassword = cpassword;
+		this.secondName = secondName;
+	}
+
+	public String getSecondName() {
+		return secondName;
+	}
+
+	public void setSecondName(String secondName) {
+		this.secondName = secondName;
 	}
 
 	public String getUsername() {

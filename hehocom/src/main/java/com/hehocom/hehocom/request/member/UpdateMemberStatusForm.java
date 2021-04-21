@@ -23,7 +23,7 @@ public class UpdateMemberStatusForm {
 		return status;
 	}
 
-	public void setUsername(Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

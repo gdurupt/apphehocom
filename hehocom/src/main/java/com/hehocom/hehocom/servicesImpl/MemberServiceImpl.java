@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hehocom.hehocom.entities.member.Member;
+import com.hehocom.hehocom.entities.member.Status;
 import com.hehocom.hehocom.exception.MemberNotFoundException;
 import com.hehocom.hehocom.exception.MemberValidationException;
 import com.hehocom.hehocom.repository.MemberRepository;
@@ -42,39 +43,41 @@ public class MemberServiceImpl implements MemberService {
 			// validation of attributes
 			validationEmail(createMemberForm.getEmail());
 			member.setEmail(createMemberForm.getEmail());
-			validationUsername(createMemberForm.getUsername());
 			member.setUsername(createMemberForm.getUsername());
+			member.setSecondname(createMemberForm.getSecondName());
+			member.setStatus(Status.CLIENT);
 			member.setPassword(this.encoder.encode(createMemberForm.getPassword()));
 			// save in database
-			memberRepository.save(member);
+			return memberRepository.save(member);
 
 		} catch (Exception e) {
 			e.getMessage();
 			return null;
 		}
-
-		return member;
 
 	}
 
 	@Override
-	public Member updatePassword(long id, UpdateMemberPasswordForm updateMemberPasswordForm) {
+	public Member updatePassword(long id, UpdateMemberPasswordForm updateMemberPasswordForm, Member checkMember) {
 
 		// get member
 		Member member = this.getMemberById(id);
 
-		// validate password and encrypt it
-		try {
-			member.setPassword(this.encoder.encode(updateMemberPasswordForm.getPassword()));
-		} catch (Exception e) {
-			e.getMessage();
-			return null;
+		if (checkMember.getId() == member.getId() || checkMember.getStatus().name() == "ADMINISTRATOR") {
+			// validate password and encrypt it
+			try {
+				member.setPassword(this.encoder.encode(updateMemberPasswordForm.getPassword()));
+			} catch (Exception e) {
+				e.getMessage();
+				return null;
+			}
+
+			// update of password in database
+			memberRepository.updatePassword(id, member.getPassword());
+
+		} else {
+			System.out.println("error");
 		}
-
-		// update of password in database
-		memberRepository.updatePassword(id, member.getPassword());
-		System.out.println("Password correctly modified");
-
 		return member;
 
 	}
@@ -82,11 +85,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updateMemberProfile(long id, UpdateMemberForm updateMemberForm) {
 
-		Member member = this.getMemberById(id);
+		memberRepository.updateMember(id, updateMemberForm.getUsername(), updateMemberForm.getSecondName(),
+				updateMemberForm.getTel());
 
-		// attributes updated for the return object and database updated
-		if (updateMemberForm.getUsername() != null)
-			member.setUsername(updateMemberForm.getUsername());
+		Member member = this.getMemberById(id);
 
 		return member;
 	}
@@ -107,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
 			Member member = this.getMemberById(id);
 
 			member.setStatus(updateMemberStatusForm.getStatus());
-			memberRepository.updateStatus(id, member.getStatus().name()); // SQL query needs strings
+			memberRepository.updateStatus(id, member.getStatus().name());
 
 			return member;
 		} else {
@@ -129,8 +131,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member getMemberByUserName(String username) {
-		return this.memberRepository.findByUsername(username);
+	public Member getMemberByMail(String mail) {
+		return this.memberRepository.findByEmail(mail);
 	}
 
 	@Override
@@ -161,16 +163,6 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberValidationException("Cette adresse mail est déjà utilisée, merci d'en choisir une autre.");
 
 		}
-	}
-
-	private void validationUsername(String username) throws MemberValidationException {
-
-		if (username != null && memberRepository.findByUsername(username) != null) {
-
-			throw new MemberValidationException("Ce pseudo est déjà utilisé, merci d'en choisir un autre.");
-
-		}
-
 	}
 
 	@Override

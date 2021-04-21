@@ -13,7 +13,7 @@ public interface MemberService {
 
 	public Member registerMember(CreateMemberForm createMemberForm);
 
-	public Member updatePassword(long id, UpdateMemberPasswordForm updateMemberPasswordForm);
+	public Member updatePassword(long id, UpdateMemberPasswordForm updateMemberPasswordForm, Member checkMember);
 
 	public Member updateMemberProfile(long id, UpdateMemberForm updateMemberForm);
 
@@ -23,7 +23,7 @@ public interface MemberService {
 
 	public Member getMemberById(long id) throws MemberNotFoundException;
 
-	public Member getMemberByUserName(String username);
+	public Member getMemberByMail(String mail);
 
 	public List<Member> getMembers() throws MemberNotFoundException;
 

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.hehocom.hehocom.entities.member.Member;
+import com.hehocom.hehocom.entities.member.Status;
+import com.hehocom.hehocom.exception.ConstraintViolationException;
 import com.hehocom.hehocom.request.Jwt.JwtResponse;
 import com.hehocom.hehocom.request.member.CreateMemberForm;
 import com.hehocom.hehocom.request.member.LoginForm;
@@ -33,6 +35,7 @@ import com.hehocom.hehocom.request.member.UpdateMemberPasswordForm;
 import com.hehocom.hehocom.request.member.UpdateMemberStatusForm;
 import com.hehocom.hehocom.services.AuthenticationService;
 import com.hehocom.hehocom.services.MemberService;
+import com.hehocom.hehocom.services.UserBySiteService;
 
 @RestController
 @CrossOrigin("*")
@@ -44,6 +47,9 @@ public class MemberController {
 
 	@Autowired
 	private AuthenticationService service;
+
+	@Autowired
+	private UserBySiteService UserBySiteService;
 
 	@PostMapping(value = "/register")
 	public Member registerMember(@Valid @RequestBody CreateMemberForm createMemberForm, Errors errors) {
@@ -75,9 +81,9 @@ public class MemberController {
 	}
 
 	// Get a Member by its username
-	@GetMapping(value = "/profile/search/{username}")
-	public Member getMemberByUsername(@PathVariable String username) {
-		return memberService.getMemberByUserName(username);
+	@GetMapping(value = "/profile/search/{mail}")
+	public Member getMemberByUsername(@PathVariable String mail) {
+		return memberService.getMemberByMail(mail);
 	}
 
 	// Get all Members
@@ -89,21 +95,25 @@ public class MemberController {
 	// Delete member
 	@DeleteMapping(value = "/profile/{id}")
 	public void deleteMemberById(@PathVariable long id) {
-		memberService.deleteById(id);
+		Member CheckMember = this.service.getCurrentUser();
+		if (CheckMember.getStatus() == Status.ADMINISTRATOR) {
+			UserBySiteService.deleteAllUserByIdByIdUser(id);
+			memberService.deleteById(id);
+		}
 	}
 
 	// modify profile member attributes
 	@PutMapping(value = "/profile/{id}")
 	public Member updateMemberById(@PathVariable long id, @RequestBody UpdateMemberForm updateMemberForm) {
 		return memberService.updateMemberProfile(id, updateMemberForm);
-
 	}
 
 	// modify profile password
-	@PutMapping(value = "/profile/{id}/password")
+	@PutMapping(value = "/profile/password/{id}")
 	public Member updateMemberPassword(@PathVariable long id,
 			@RequestBody UpdateMemberPasswordForm updateMemberPasswordForm) {
-		return memberService.updatePassword(id, updateMemberPasswordForm);
+		Member CheckMember = this.service.getCurrentUser();
+		return memberService.updatePassword(id, updateMemberPasswordForm, CheckMember);
 	}
 
 	// modidy member status

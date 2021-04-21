@@ -1,7 +1,6 @@
 package com.hehocom.hehocom.security.configuration;
 
 import static com.hehocom.hehocom.security.SecurityConstants.LOG_IN_URL;
-import static com.hehocom.hehocom.security.SecurityConstants.REGISTER_URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import com.hehocom.hehocom.security.filter.JWTAuthorizationFilter;
 import com.hehocom.hehocom.services.MemberService;
@@ -43,8 +43,7 @@ public class WebSecurity extends AbstractConfiguration {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
 		if (!httpPatternMatcherDisabled) { // http pattern matcher enabled
-			http.authorizeRequests()
-					.antMatchers(HttpMethod.POST, REGISTER_URL, LOG_IN_URL, "/hehocom/whoami", "/hehocom/register")
+			http.authorizeRequests().antMatchers(HttpMethod.POST, LOG_IN_URL, "/hehocom/whoami", "/hehocom/login")
 					.permitAll()
 					.antMatchers(HttpMethod.GET, "/favicon.ico", "/v2/api-docs", "/configuration/ui",
 							"/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**",
@@ -58,6 +57,13 @@ public class WebSecurity extends AbstractConfiguration {
 				// this disables session creation on Spring Security
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers()
 				.frameOptions().disable();
+
+		http.headers().contentTypeOptions();
+		http.headers().xssProtection();
+		http.headers().cacheControl();
+		http.headers().httpStrictTransportSecurity();
+		http.headers().frameOptions();
+		http.headers().addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy", "script-src 'self'"));
 	}
 
 	@Override

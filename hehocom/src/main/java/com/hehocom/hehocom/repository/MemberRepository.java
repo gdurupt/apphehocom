@@ -27,8 +27,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Modifying
 	@Transactional
-	@Query(nativeQuery = true, value = "UPDATE members SET username = :username WHERE Id_Member = :id")
-	void updateUsername(@Param(value = "id") long id, @Param(value = "username") String username);
+	@Query(nativeQuery = true, value = "UPDATE members SET username = :username, secondname = :secondname, tel = :tel WHERE Id_Member = :id")
+	void updateMember(@Param(value = "id") long id, @Param(value = "username") String username,
+			@Param(value = "secondname") String secondname, @Param(value = "tel") String tel);
 
 	@Modifying
 	@Transactional

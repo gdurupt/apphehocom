@@ -56,7 +56,7 @@ public class Member implements UserDetails {
 	private String password;
 
 	@Column(name = "creation_date")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Europe/Paris")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Paris")
 	private Timestamp dateInscription;
 
 	@Column(name = "status")
