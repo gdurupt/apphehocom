@@ -20,8 +20,8 @@ public class Services {
 	@NotNull(message = "Un nom est requis")
 	private String nom;
 
-	@Column(name = "content")
-	@NotNull(message = "Une mission est requis")
+	@Column(name = "content", columnDefinition = "LONGTEXT")
+	@NotNull(message = "Une description est requise")
 	private String content;
 
 	public Services() {

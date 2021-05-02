@@ -24,7 +24,7 @@ getHebergementBySite() : Observable<Hebergement[]> {
   return this.HttpClient.get<Hebergement[]>(environment.apiUrl + '/hebergement',{'headers':headers});
 }
 
-    /**
+/**
 * 
 * search by name
 */
@@ -32,9 +32,6 @@ getHebergementByName(name) : Observable<Hebergement> {
   const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem('tokenhehocom')}
   return this.HttpClient.get<Hebergement>(environment.apiUrl + '/hebergement/' + name,{'headers':headers});
 }
-
-
-
 
 
 /**
