@@ -72,7 +72,8 @@ public class ComentController {
 		Member CheckMember = this.service.getCurrentUser();
 
 		Path copyLocationFile = Paths.get("D:\\ProjetPro\\HehocomFront\\src\\assets\\fichiers" + File.separator
-				+ StringUtils.cleanPath("file de " + CheckMember.getEmail() + " - " + file.getOriginalFilename()));
+				+ StringUtils.cleanPath("file-de-" + CheckMember.getEmail().replaceAll(" ", "") + "-"
+						+ file.getOriginalFilename().replaceAll(" ", "")));
 		try {
 			Files.copy(file.getInputStream(), copyLocationFile, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

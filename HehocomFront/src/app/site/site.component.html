@@ -12,10 +12,10 @@
 
     <app-header class="bg-dark col-lg-2"></app-header>
 
-    <section class="d-flex flex-column">
+    <section class="d-flex flex-column w-100">
       <div *ngIf="OneSite != null" class="card d-flex flex-row col-lg-11 m-4 p-0 position-relative">
-        <div class="col-3 p-0">
-            <div *ngIf="OneSite.presentation == null" class="h-100 d-flex align-items-center justify-content-center">
+        <div class="col-3 p-0 d-flex">
+            <div *ngIf="OneSite.presentation == null" class="w-100 d-flex align-items-center justify-content-center">
                 <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -105,7 +105,7 @@
                   </span>
                   <button class="btn btn-success mb-3" type="button" data-toggle="modal" data-target="#mission" (click)="addMission()">Ajouter une mission</button>
               </div>
-              <div class="card mb-3" style="width: 100%;" *ngFor="let mission of missions" (click)="updateMission(mission)" [ngClass]="checkUser(mission.idUser)" >
+              <div class="card mb-3" style="width: 100%;" *ngFor="let mission of missions" >
                 <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between">
                     <h5 class="card-title">{{ mission.name }}</h5>
@@ -115,6 +115,9 @@
                   <h6 class="card-subtitle mb-2 text-muted">Derniere mise a jour : {{ mission.dateCreation }}</h6>
                   <p class="card-text">{{ mission.content }}</p>
                 </div>
+                <div class="card-footer bg-warning footerUpdateComment" (click)="updateMission(mission)" [ngClass]="checkUser(mission.idUser)">
+                  <p class="text-center footerUpdateCommentP">Modifier / Supprimer</p>
+              </div>
               </div>
               <div class="d-flex align-items-center justify-content-center">
                 <fa-icon class="text-light h4 mr-2 cardPointer" [icon]="faArrowLeft" *ngIf="offsetMission > 0" (click)="backMission()"></fa-icon>
@@ -129,12 +132,15 @@
                 </span>
                 <button class="btn btn-success mb-3" type="button" data-toggle="modal" data-target="#coment" (click)="addComent()">Ajouter un commentaire</button>
             </div>
-              <div class="card mb-3 cardComent" style="width: 100%;" *ngFor="let coment of coments; let nextArrowComent = index" (click)="updateComent(coment)" [ngClass]="checkUser(coment.idUser)">
+              <div class="card mb-3 cardComent" style="width: 100%;" *ngFor="let coment of coments; let nextArrowComent = index">
                 <div class="card-body">
                   <h5 class="card-title">{{ coment.nameUser }}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">Envoyer le : {{ coment.dateCreation }}</h6>
                   <p class="card-text">{{ coment.content }}</p>
-                  <p class="card-link" *ngIf="coment.fileName != null"><a href="download/../../../assets/fichiers/{{ coment.fileName }}" download="{{ coment.fileName }}">Télécharger fichier</a></p>
+                  <p class="card-link" *ngIf="coment.fileName != null"><a href="/../../../assets/fichiers/{{ coment.fileName }}" download="filename">Télécharger fichier</a></p>
+                </div>
+                <div class="card-footer bg-warning footerUpdateComment" (click)="updateComent(coment)" [ngClass]="checkUser(coment.idUser)">
+                    <p class="text-center footerUpdateCommentP">Modifier / Supprimer</p>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center">

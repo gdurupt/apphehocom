@@ -208,7 +208,7 @@ export class DashboardComponent implements OnInit {
       type: ['',Validators.required],
       url: ['',Validators.required],
       bdd_name:[''],
-      date_creation:['',Validators.required]
+      date_creation:['']
     })
   }
 

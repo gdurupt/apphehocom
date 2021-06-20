@@ -70,7 +70,8 @@ public class ComentServiceImpl implements ComentService {
 		coment.setIdSite(newComent.getIdSite());
 		if (file != null) {
 			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			coment.setFileName("file de " + CheckMember.getEmail() + " - " + file.getOriginalFilename());
+			coment.setFileName("file-de-" + CheckMember.getEmail().replaceAll(" ", "") + "-"
+					+ file.getOriginalFilename().replaceAll(" ", ""));
 		} else {
 			coment.setFileName(null);
 		}

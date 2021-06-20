@@ -4,6 +4,7 @@ import { Service } from '../interfaces/service';
 import { User } from '../interfaces/user';
 import { ServicesService } from '../services/services.service';
 import { UsersService } from '../services/users.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-service',
@@ -15,6 +16,7 @@ export class ServiceComponent implements OnInit {
   user: User;
   services: Service[];
   serviceForm: FormGroup
+  serviceId;
 
   constructor(
     private userService: UsersService,
@@ -53,29 +55,24 @@ export class ServiceComponent implements OnInit {
         for (let index = 0; index < this.services.length; index++) {
           this.services[index].BoolToChange = false;
         }
-      },
-      error: error => {
       }
   });
   }
 
-  updateService(service: Service){
-    this.serviceService.UpdateService(this.serviceForm.value,service.id).subscribe({
+  updateService(){
+    this.serviceService.UpdateService(this.serviceForm.value,this.serviceId).subscribe({
       next: data => {
         this.allServices();
-        console.log(this.serviceForm.value);
-      },
-      error: error => {
+        $('#update').modal('hide');
+        this.clearForm();
       }
   });
   }
 
-  deleteService(service: Service){
-    this.serviceService.deleteService(service.id).subscribe({
+  deleteService(){
+    this.serviceService.deleteService(this.serviceId).subscribe({
       next: data => {
         this.allServices();
-      },
-      error: error => {
       }
   });
   }
@@ -84,8 +81,7 @@ export class ServiceComponent implements OnInit {
     this.serviceService.AddService(this.serviceForm.value).subscribe({
       next: data => {
         this.allServices();
-      },
-      error: error => {
+        $('#service').modal('hide');
       }
   });
   }
@@ -99,6 +95,15 @@ export class ServiceComponent implements OnInit {
   }
 
   changeService(service : Service,id){
+
+
+    this.serviceId = service.id;
+
+    this.serviceForm.get('nom').setValue(service.nom);
+    this.serviceForm.get('content').setValue(service.content);
+
+    $('#update').modal('show');
+
     if(this.user.status != 'CLIENT'){
       for (let index = 0; index < this.services.length; index++) {
         this.services[index].BoolToChange = false;
@@ -107,7 +112,17 @@ export class ServiceComponent implements OnInit {
       this.services[id].BoolToChange = true;
     }
 
-    this.serviceForm.get('nom').setValue(service.nom);
-    this.serviceForm.get('content').setValue(service.content);
+  }
+
+
+  clearForm(){
+    this.serviceForm.get('nom').setValue("");
+    this.serviceForm.get('content').setValue("");
+  }
+
+  seeAll(){
+    for (let index = 0; index < this.services.length; index++) {
+      this.services[index].BoolToChange = false;
+    }
   }
 }

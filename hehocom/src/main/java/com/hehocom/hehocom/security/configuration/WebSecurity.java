@@ -41,13 +41,16 @@ public class WebSecurity extends AbstractConfiguration {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/", "/js/**", "/**")
+				.permitAll();
 		if (!httpPatternMatcherDisabled) { // http pattern matcher enabled
-			http.authorizeRequests().antMatchers(HttpMethod.POST, LOG_IN_URL, "/hehocom/whoami", "/hehocom/login")
+			http.authorizeRequests()
+					.antMatchers(HttpMethod.POST, LOG_IN_URL, "/", "/**", "/hehocom/whoami", "/hehocom/login",
+							"/hehocom/email/lostpassword")
 					.permitAll()
-					.antMatchers(HttpMethod.GET, "/favicon.ico", "/v2/api-docs", "/configuration/ui",
-							"/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**",
-							"/h2/**", "hehocom/*")
+					.antMatchers(HttpMethod.GET, "/", "/**", "/favicon.ico", "/v2/api-docs", "/configuration/ui",
+							"/swagger-resources/**", "/swagger-resources", "/configuration/security",
+							"/swagger-ui.html", "/webjars/**", "/h2/**", "hehocom/*")
 					.permitAll().anyRequest().authenticated();
 		} else { // http pattern matcher disabled
 			http.authorizeRequests().anyRequest().permitAll(); // toutes les pages/requêtes sont accessibles

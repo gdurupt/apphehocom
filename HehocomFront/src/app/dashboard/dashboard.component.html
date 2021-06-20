@@ -11,7 +11,7 @@
 <section class="d-flex mt-5" *ngIf="user != null">
 
     <app-header class="bg-dark col-lg-2"></app-header>
-    <section *ngIf="sites != null">
+    <section *ngIf="sites != null" class="w-100">
         <div>
             <div class="m-5 col-11 p-0 d-flex align-items-center justify-content-between">
                 <form class="input-group col-8"  [formGroup]="searchform" (ngSubmit)="searchSiteName()">

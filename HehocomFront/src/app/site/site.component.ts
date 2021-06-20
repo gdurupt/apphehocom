@@ -264,7 +264,6 @@ export class SiteComponent implements OnInit {
   }
 
   coment(){
-    console.log(this.idComent);
     if(this.idComent != 0){
       this.comentService.UpdateComentBySite(this.comentForm.value,this.idComent).subscribe({
         next: data => {
@@ -275,25 +274,36 @@ export class SiteComponent implements OnInit {
         }
     });
     }else{
-      this.comentService.AddComentBySite(this.comentForm.value).subscribe({
-        next: data => {
-          this.getComent();
-          $('#coment').modal('hide');
-        },
-        error: error => {
-        }
-    });
+      if (this.file != null) {
+        this.comentService.AddComentAndFileBySite(this.comentForm.value,this.file).subscribe({
+          next: data => {
+            this.getComent();
+            $('#coment').modal('hide');
+          },
+          error: error => {
+          }
+      });
+      }else{
+        this.comentService.AddComentBySite(this.comentForm.value).subscribe({
+          next: data => {
+            this.getComent();
+            $('#coment').modal('hide');
+          },
+          error: error => {
+          }
+      });
+      }
+    
     }
     $('#coment').modal('hide');
   }
 
   updateComent(coment: Coment){
-    if(coment.idUser != this.user.id){
-      return null;
+    if(coment.idUser == this.user.id || this.user.status == "ADMINISTRATOR"){
+      this.idComent = coment.id;
+      this.comentForm.get('content').setValue(coment.content);
+      $('#coment').modal('show');
     }
-    this.idComent = coment.id;
-    this.comentForm.get('content').setValue(coment.content);
-    $('#coment').modal('show');
   }
 
   mission(){
@@ -321,15 +331,14 @@ export class SiteComponent implements OnInit {
   }
 
   updateMission(mission: Mission){
-    if(mission.idUser != this.user.id){
-      return null;
+    if(mission.idUser == this.user.id || this.user.status == "ADMINISTRATOR"){
+      this.idMission = mission.id;
+      this.missionForm.get('content').setValue(mission.content);
+      this.missionForm.get('name').setValue(mission.name);
+      this.missionForm.get('statut').setValue(mission.statut);
+      this.missionForm.get('type').setValue(mission.type);
+      $('#mission').modal('show');
     }
-    this.idMission = mission.id;
-    this.missionForm.get('content').setValue(mission.content);
-    this.missionForm.get('name').setValue(mission.name);
-    this.missionForm.get('statut').setValue(mission.statut);
-    this.missionForm.get('type').setValue(mission.type);
-    $('#mission').modal('show');
   }
 
   trueFile(){
@@ -384,7 +393,7 @@ export class SiteComponent implements OnInit {
 
 
   checkUser(idUser){
-    if(idUser == this.user.id){
+    if(idUser == this.user.id || this.user.status == "ADMINISTRATOR" ){
       return 'cardPointer';
     }else{
       return '';
